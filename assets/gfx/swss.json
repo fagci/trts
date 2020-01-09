@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "version": "1.0",
+    "image": "swss.png",
+    "size": {"w": 800, "h": 496}
+  },
+  "frames": {
+    "plane": {
+      "frame": {"x": 0, "y": 320, "w": 48, "h": 30}
+    },
+    "small_rocket": {
+      "frame": {"x": 546, "y": 22, "w": 12, "h": 4},
+      "rotated": true
+    },
+    "base_1": {
+      "frame": {"x": 167, "y": 386, "w": 32, "h": 32}
+    },
+    "base_2": {
+      "frame": {"x": 200, "y": 386, "w": 32, "h": 32}
+    },
+    "base_3": {
+      "frame": {"x": 233, "y": 386, "w": 32, "h": 32}
+    },
+    "base_4": {
+      "frame": {"x": 266, "y": 386, "w": 32, "h": 32}
+    },
+    "turret_base": {
+      "frame": {"x": 1, "y": 353, "w": 32, "h": 32}
+    },
+    "turret": {
+      "frame": {"x": 67, "y": 353, "w": 32, "h": 32}
+    },
+    "retransmitter": {
+      "frame": {"x": 1, "y": 54, "w": 16, "h": 16}
+    }
+  }
+}

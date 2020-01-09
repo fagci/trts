@@ -1,0 +1,85 @@
+{
+  "Turret": {
+    "Health": {
+      "max": 1000
+    },
+    "RenderObject": {
+      "texture": "turret_base"
+    },
+    "Slots": {
+      "places": [
+        "TurretGun"
+      ]
+    },
+    "Team": {
+      "team": "BETA"
+    },
+    "Solid": {},
+    "Debug": {
+      "debugTextTemplate": "#${this.entity._uid}\nTeam: ${this.entity.Team.value}"
+    }
+  },
+  "TurretGun": {
+    "RenderObject": {
+      "texture": "turret"
+    },
+    "Armed": {
+      "type": "MACHINE_GUN"
+    },
+    "Position": {}
+  },
+  "Bullet": {
+    "RenderObject": {
+      "texture": "small_rocket"
+    },
+    "LifeTime": {
+      "value": 1000
+    },
+    "Position": {},
+    "Solid": {}
+  },
+  "EG": {
+    "RenderObject": {
+      "texture": ["base_1", "base_2", "base_3", "base_4"]
+    },
+    "EnergyGenerator": {
+      "totalCapacity": 1000,
+      "capacity": 100,
+      "type": "FUEL"
+    },
+    "Debug": {
+      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}"
+    },
+    "Solid": {},
+    "Health": {"max": 500}
+  },
+  "ER": {
+    "RenderObject": {
+      "texture": "retransmitter"
+    },
+    "EnergyTransponder": {
+      "totalCapacity": 10,
+      "capacity": 0
+    },
+    "Debug": {
+      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}"
+    },
+    "Solid": {},
+    "Health": {"max": 200}
+  },
+  "EC": {
+    "RenderObject": {
+      "texture": "cover_red"
+    },
+    "EnergyConsumer": {
+      "totalCapacity": 10,
+      "capacity": 0,
+      "load": 2
+    },
+    "Debug": {
+      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyConsumer.capacity|0}/${this.entity.EnergyConsumer.totalCapacity}"
+    },
+    "Solid": {},
+    "Health": {"max": 500}
+  }
+}

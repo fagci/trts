@@ -1,0 +1,27 @@
+import 'phaser'
+import Game from './game';
+import MainScene from './scenes/main-scene';
+
+const config: Phaser.Types.Core.GameConfig = {
+  type: Phaser.AUTO,
+  scene: MainScene,
+  banner: false,
+  antialias: false,
+  roundPixels: true,
+  disableContextMenu: true,
+  backgroundColor: '#cceeff',
+  scale: {
+    mode: Phaser.Scale.ScaleModes.RESIZE,
+  },
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { x: 0, y: 0 }
+    }
+  },
+};
+
+
+window.addEventListener("load", () => {
+  const game = new Game(config)
+})

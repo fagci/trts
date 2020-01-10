@@ -2,9 +2,11 @@ import Entity from './entity'
 
 export default class EntityManager {
   private static _eid = 0
+  static hasNewMember: boolean = false
   private static readonly entityTag: string = 'ecs-entity'
 
   static create(name?: string) {
+    this.hasNewMember = true
     let entity = document.createElement(this.entityTag) as Entity
     entity.components = {}
     if (name) entity.dataset.name = name
@@ -28,6 +30,7 @@ export default class EntityManager {
   }
 
   static addComponent(entity, component) {
+    this.hasNewMember = true
     let name = component.constructor.name
     component.entity = entity
     entity.setAttribute(name, '')

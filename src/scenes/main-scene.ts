@@ -8,6 +8,7 @@ export default class MainScene extends Phaser.Scene {
   keyS: Phaser.Input.Keyboard.Key;
   keyA: Phaser.Input.Keyboard.Key;
   keyD: Phaser.Input.Keyboard.Key;
+  keyZ: Phaser.Input.Keyboard.Key;
   followPoint: Phaser.Math.Vector2;
   cameraSpeed: number = 10;
   chunkSize = 16;
@@ -26,13 +27,13 @@ export default class MainScene extends Phaser.Scene {
     this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
     this.followPoint = new Phaser.Math.Vector2(
       this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
       this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
     );
 
-    
   }
 
   getChunk(x, y) {
@@ -90,6 +91,10 @@ export default class MainScene extends Phaser.Scene {
     }
     if (this.keyD.isDown) {
       this.followPoint.x += this.cameraSpeed;
+    }
+
+    if (this.keyZ.isDown) {
+      this.cameras.main.zoom += 0.1;
     }
 
     this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y);

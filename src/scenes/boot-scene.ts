@@ -3,11 +3,11 @@ export default class BootScene extends Phaser.Scene {
     super({
         key: 'BootScene'
     })
-    console.log('BootScene constructor')
   }
 
   loadResources() {
     this.load.image("ss", "/gfx/ss.png")
+    this.load.atlas('mc','/gfx/ss.png','/gfx/ss.json')
   }
 
   preload() {
@@ -31,10 +31,31 @@ export default class BootScene extends Phaser.Scene {
 
     this.load.on('complete', () => {
       progress.destroy()
-      text.destroy
+      text.destroy()
+      this.createAnims()
       this.scene.start('MainScene')
     })
 
     this.loadResources()
+  }
+  createAnims() {
+    this.anims.create({
+      key:'water',
+      repeat: -1,
+      frameRate: 5,
+      frames: this.anims.generateFrameNames('mc', {
+        prefix: 'water_',
+        start: 1, 
+        end: 5,
+      })
+    })
+    this.anims.create({
+      key:'test',
+      frameRate: 2,
+      repeat: -1,
+      frames: this.anims.generateFrameNames('mc',{
+        frames:['cover_red','cover_black']
+      })
+    })
   }
 }

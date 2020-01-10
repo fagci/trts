@@ -1,11 +1,14 @@
 import { Noise } from "noisejs";
+import { GameObjects } from "phaser";
+import MainScene from "./scenes/main-scene";
 
 export default class Chunk {
-  scene: any;
+  scene: MainScene;
   x: any;
   y: any;
-  tiles: any;
+  tiles: Phaser.GameObjects.Group;
   isLoaded: boolean;
+  
 
   static noise: Noise;
 
@@ -14,7 +17,7 @@ export default class Chunk {
     this.scene = scene;
     this.x = x;
     this.y = y;
-    this.tiles = this.scene.add.group();
+    this.tiles = this.scene.add.group()
     this.isLoaded = false;
   }
 
@@ -33,6 +36,14 @@ export default class Chunk {
     if (h < 0.5) return 0;
     if (h < 0.85) return 1;
     return 98;
+  }
+
+  getBiomeName(h: number) {
+    if (h < 0.12) return 'sand';
+    if (h < 0.18) return 'ground';
+    if (h < 0.5) return 'grass';
+    if (h < 0.85) return 'stone';
+    return 'snow';
   }
 
   unload() {
@@ -83,51 +94,35 @@ export default class Chunk {
   }
 
   load() {
-    if (!this.isLoaded) {
-      for (var x = 0; x < this.scene.chunkSize; x++) {
-        for (var y = 0; y < this.scene.chunkSize; y++) {
+    if (this.isLoaded) return
+    
+    for (let x = 0; x < this.scene.chunkSize; x++) {
+      for (let y = 0; y < this.scene.chunkSize; y++) {
 
-          var tileX = (this.x * (this.scene.chunkSize * this.scene.tileSize)) + (x * this.scene.tileSize);
-          var tileY = (this.y * (this.scene.chunkSize * this.scene.tileSize)) + (y * this.scene.tileSize);
+        let tileX = (this.x * (this.scene.chunkSize * this.scene.tileSize)) + (x * this.scene.tileSize);
+        let tileY = (this.y * (this.scene.chunkSize * this.scene.tileSize)) + (y * this.scene.tileSize);
 
-          var perlinValue = this.getHeight(tileX, tileY);
-
-          var key = "";
-          var animationKey = "";
-
-          if (perlinValue < 0.2) {
-            key = "sprWater";
-            animationKey = "sprWater";
-          }
-          else if (perlinValue >= 0.2 && perlinValue < 0.3) {
-            key = "sprSand";
-          }
-          else if (perlinValue >= 0.3) {
-            key = "sprGrass";
-          }
-
-
-          var tile = new Tile(this.scene, tileX, tileY, key);
-
-          if (animationKey !== "") {
-            tile.play(animationKey);
-          }
-
-          this.tiles.add(tile);
+        let perlinValue = this.getHeight(tileX/this.scene.tileSize,tileY/this.scene.tileSize);
+        let key = this.getBiomeName(perlinValue)
+        
+        let tile = new Tile(this.scene, tileX, tileY, 'mc', key)
+        this.tiles.add(tile)  
+        if (perlinValue < 0.2) {
+          tile = new Tile(this.scene, tileX, tileY, 'mc').play('water')
+          this.tiles.add(tile)
         }
       }
-
-      this.isLoaded = true;
     }
+    
+    this.isLoaded = true;
   }
 }
 
 class Tile extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, key) {
-    super(scene, x, y, key);
+  constructor(scene, x, y, key, frame?) {
+    super(scene, x, y, key, frame);
     this.scene = scene;
     this.scene.add.existing(this);
     this.setOrigin(0);
   }
-}
 }

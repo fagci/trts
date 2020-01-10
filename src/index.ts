@@ -10,7 +10,7 @@ const config: Phaser.Types.Core.GameConfig = {
     MainScene,
   ],
   banner: false,
-  antialias: false,
+  pixelArt: true,
   roundPixels: true,
   disableContextMenu: true,
   backgroundColor: '#cceeff',
@@ -21,6 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
     default: 'arcade',
     arcade: {
       gravity: {x: 0, y: 0},
+      debug: false,
     },
   },
 }

@@ -22,7 +22,7 @@ export default class EntityManager {
     return this.find(`${this.entityTag}[${componentName.toLowerCase()}]`, root).map(({components}) => components[componentName]) as T[]
   }
 
-  static getEntites(deps: string[], root: any = document) {
+  static getEntities(deps: string[], root: any = document) {
     return this.find(`${this.entityTag}[${deps.join('][')}]`, root)
   }
 

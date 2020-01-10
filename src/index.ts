@@ -39,7 +39,10 @@ class C3 {
 const root = EntityManager.create('root')
 
 for (let i = 0; i < 10000; i++) {
-  const entity = EntityManager.create(`Entity ${i}`).addComponent(new C1).addComponent(new C2).addComponent(new C3)
+  const entity = EntityManager.create(`Entity ${i}`)
+    if(Math.random()<0.4) entity.addComponent(new C1)
+    if(Math.random()<0.8) entity.addComponent(new C2)
+    if(Math.random()>0.4) entity.addComponent(new C3)
   root.appendChild(entity)
 }
 console.time('filter')

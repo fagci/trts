@@ -4,10 +4,11 @@ export default class EntityManager {
   private static _eid = 0
   private static readonly entityTag: string = 'ecs-entity'
 
-  static create(name: string) {
+  static create(name?: string) {
     let entity = document.createElement(this.entityTag) as Entity
     entity.components = {}
-    entity.id = (EntityManager._eid++).toString()
+    if (name) entity.dataset.name = name
+    entity.id = `e${EntityManager._eid++}`
 
     entity.addComponent = (component) => this.addComponent(entity, component)
 

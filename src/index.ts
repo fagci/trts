@@ -22,23 +22,29 @@ const config: Phaser.Types.Core.GameConfig = {
 }
 
 class C1 {
+  a = 'test1'
+  b = 'test2'
 }
 
 class C2 {
+  a = 'test1'
+  b = 'test2'
 }
 
 class C3 {
+  a = 'test1'
+  b = 'test2'
 }
 
 const root = EntityManager.create('root')
-const entity1 = EntityManager.create('E1').addComponent(new C1).addComponent(new C2).addComponent(new C3)
-const entity2 = EntityManager.create('E2').addComponent(new C1).addComponent(new C3)
-const entity3 = EntityManager.create('E3').addComponent(new C2).addComponent(new C3)
-root.appendChild(entity1)
-root.appendChild(entity2)
-root.appendChild(entity3)
 
+for (let i = 0; i < 10000; i++) {
+  const entity = EntityManager.create(`Entity ${i}`).addComponent(new C1).addComponent(new C2).addComponent(new C3)
+  root.appendChild(entity)
+}
+console.time('filter')
 console.log(root, EntityManager.getEntities(['C2', 'C3'], root))
+console.timeEnd('filter')
 
 window.addEventListener('load', () => {
   // const game = new Game(config)

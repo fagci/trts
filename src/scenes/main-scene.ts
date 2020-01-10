@@ -21,10 +21,6 @@ export default class MainScene extends Phaser.Scene {
     Chunk.noise = new Noise(1);
   }
 
-  preload(): void {
-    this.load.image("ss", "/gfx/ss.png");
-  }
-
   create(): void {
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);

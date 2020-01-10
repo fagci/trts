@@ -8,24 +8,24 @@ export default class MovingSystem extends System {
   ]
 
   update(d: number) {
-    for (let entity of this.group) {
-      for (const entity of this.group) {
-        let Position: Components.Position, Moving: Components.Moving
-        ({Position, Moving} = entity.components)
-        if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
-          let {force, velocity, mass, maxVelocity} = Moving
-          velocity.x += force.x * d / mass
-          velocity.y += force.y * d / mass
+    console.log(this.group.length)
+    for (const entity of this.group) {
+      let Position: Components.Position, Moving: Components.Moving
+      ({Position, Moving} = entity.components)
+      if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
+        let {force, velocity, mass, maxVelocity} = Moving
+
+        velocity.x += force.x * d / mass
+        velocity.y += force.y * d / mass
 
 
-          velocity.x = Phaser.Math.Clamp(velocity.x, 0, maxVelocity)
-          velocity.y = Phaser.Math.Clamp(velocity.y, 0, maxVelocity)
+        velocity.x = Phaser.Math.Clamp(velocity.x, 0, maxVelocity)
+        velocity.y = Phaser.Math.Clamp(velocity.y, 0, maxVelocity)
 
-          Position.x += velocity.x
-          Position.y += velocity.y
+        Position.x += velocity.x
+        Position.y += velocity.y
 
-          Moving.direction = Phaser.Geom.Line.Angle(new Phaser.Geom.Line(0, 0, velocity.x, velocity.y))
-        }
+        Moving.direction = Phaser.Geom.Line.Angle(new Phaser.Geom.Line(0, 0, velocity.x, velocity.y))
       }
     }
   }

@@ -1,10 +1,11 @@
 import EntityManager from './entity-manager'
+import Entity from './entity'
 
 export default class System {
   static systems: { [name: string]: any } = {}
 
   deps: string[] = []
-  group: []
+  group: Entity[]
 
   static update(d: number) {
     for (let name in this.systems) {

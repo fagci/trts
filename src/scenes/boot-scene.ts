@@ -11,9 +11,8 @@ export default class BootScene extends Phaser.Scene {
   }
 
   loadResources() {
-    this.load.image("ss", "/gfx/ss.png")
-    this.load.image("ssex", "/gfx/ssex.png")
-    this.load.atlas('mc', '/gfx/ss.png', '/gfx/ss.json')
+    this.load
+      .image("ssex", "/gfx/ssex.png")
   }
 
   createAnims() {

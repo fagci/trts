@@ -40,20 +40,13 @@ export default class Chunk {
   }
 
   static getBiome(h: number) {
-    if (h < 0.12) return 26
-    if (h < 0.18) return 2
-    if (h < 0.5) return 0
-    if (h < 0.85) return 1
-    return 98
+    if (h < 0.12) return 26 // sand
+    if (h < 0.18) return 2 // ground
+    if (h < 0.5) return 0 // grass
+    if (h < 0.85) return 1 // stone
+    return 98 // snow
   }
 
-  static getBiomeName(h: number) {
-    if (h < 0.12) return "sand"
-    if (h < 0.18) return "ground"
-    if (h < 0.5) return "grass"
-    if (h < 0.85) return "stone"
-    return "snow"
-  }
 
   load() {
     if (this.isLoaded) return

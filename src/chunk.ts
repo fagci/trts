@@ -75,9 +75,9 @@ export default class Chunk {
       tileHeight: 16,
     })
 
-    this.tileSet = this.tileMap.addTilesetImage("ssex",null,16,16,1,2)
+    this.tileSet = this.tileMap.addTilesetImage("mc", null, 16, 16, 1, 2)
 
-    this.tileMap.createStaticLayer(0, this.tileSet, x1 << 4, y1 << 4)
+    this.tileMap.createStaticLayer(0, this.tileSet, x1 << 4, y1 << 4).setDepth(-1)
 
     this.isLoaded = true
   }

@@ -12,28 +12,12 @@ export default class BootScene extends Phaser.Scene {
 
   loadResources() {
     this.load
-      .image("ssex", "/gfx/ssex.png")
+      .image("mc", require("../../assets/gfx/mc.png"))
+      .atlas('swss', require("../../assets/gfx/swss.png"), require("../../assets/gfx/swss.json"))
   }
 
-  createAnims() {
-    this.anims.create({
-      key: 'water',
-      repeat: -1,
-      frameRate: 5,
-      frames: this.anims.generateFrameNames('mc', {
-        prefix: 'water_',
-        start: 1,
-        end: 5,
-      })
-    })
-    this.anims.create({
-      key: 'test',
-      frameRate: 2,
-      repeat: -1,
-      frames: this.anims.generateFrameNames('mc', {
-        frames: ['cover_red', 'cover_black']
-      })
-    })
+  create() {
+    this.scene.start('MainScene')
   }
 
   preload() {
@@ -54,7 +38,7 @@ export default class BootScene extends Phaser.Scene {
     Geom.Rectangle.CenterOn(this.progressBgRect, 0.5 * SW, 0.5 * SH)
     this.progressFgRect = Geom.Rectangle.Clone(this.progressBgRect)
     
-    this.text = this.add.text(32, SH / 2 - 32, 'Loading...', { color: '#246' })
+    this.text = this.add.text(32, SH / 2 - 32, 'Loading...', { color: '#246', smoothed: false })
   }
 
   private onLoadProgress(value) {
@@ -71,7 +55,5 @@ export default class BootScene extends Phaser.Scene {
   private onLoadComplete() {
     this.progress.destroy()
     this.text.destroy()
-    this.createAnims()
-    this.scene.start('MainScene')
   }
 }

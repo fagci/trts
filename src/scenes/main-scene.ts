@@ -23,6 +23,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.scene.launch('UIScene')
     this.noise = new Noise(1)
     this.movementKeys = this.input.keyboard.addKeys('W,S,A,D') as KeyMap
     this.zoomKeys = this.input.keyboard.addKeys('Z,X') as KeyMap
@@ -31,6 +32,13 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
       this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
     )
+
+    
+    this.input.on('wheel', e => {
+      this.changeZoom(-e.deltaY / 1000)
+    })
+
+    this.updateCamera()
   }
 
   getChunk(x, y) {
@@ -66,16 +74,41 @@ export default class MainScene extends Phaser.Scene {
       }
     }
 
+
+
+    if (this.game.input.activePointer.isDown) {
+      if (this.game.origDragPoint) {
+        // move the camera by the amount the mouse has moved since last update
+        this.addPosition(
+          this.game.origDragPoint.x - this.game.input.activePointer.position.x,
+          this.game.origDragPoint.y - this.game.input.activePointer.position.y
+        )
+      } // set new drag origin to current position
+      this.game.origDragPoint = this.game.input.activePointer.position.clone()
+    } else {
+      this.game.origDragPoint = null
+    }
+
+
+
     let speed = this.cameraSpeed / this.cameras.main.zoom
 
-    if (this.movementKeys.W.isDown) this.followPoint.y -= speed
-    if (this.movementKeys.S.isDown) this.followPoint.y += speed
-    if (this.movementKeys.A.isDown) this.followPoint.x -= speed
-    if (this.movementKeys.D.isDown) this.followPoint.x += speed
+    if (this.movementKeys.W.isDown) this.addPosition(0, -speed)
+    if (this.movementKeys.S.isDown) this.addPosition(0, speed)
+    if (this.movementKeys.A.isDown) this.addPosition(-speed, 0)
+    if (this.movementKeys.D.isDown) this.addPosition(speed, 0)
 
     if (this.zoomKeys.Z.isDown) this.changeZoom(0.01)
     if (this.zoomKeys.X.isDown) this.changeZoom(-0.01)
+  }
 
+  addPosition(dx, dy) {
+    this.followPoint.x += dx
+    this.followPoint.y += dy
+    this.updateCamera()
+  }
+
+  updateCamera() {
     this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y)
   }
 
@@ -83,5 +116,6 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.zoom += delta
     this.cameras.main.zoom = Phaser.Math.Clamp(this.cameras.main.zoom, 0.5, 4)
     this.chunkRadiusToLoad = this.cameras.main.width >> 7
+    this.updateCamera()
   }
 }

@@ -9,7 +9,6 @@ export default class Chunk {
   scene: MainScene
   x: number
   y: number
-  tiles: Phaser.GameObjects.Group
   isLoaded: boolean
   static noise: Noise
   tileMap: Phaser.Tilemaps.Tilemap
@@ -20,14 +19,15 @@ export default class Chunk {
     if (!Chunk.noise) Chunk.noise = scene.noise
     this.x = x
     this.y = y
-    // this.tiles = this.scene.add.group()
-    this.isLoaded = false
   }
 
   unload() {
     if (!this.isLoaded) return
+    this.isLoaded = true
     this.tileMap.destroy()
     this.isLoaded = false
+    this.tileMap = null
+    this.tileSet = null
   }
 
   static getHeight(i: number, j: number) {
@@ -88,9 +88,4 @@ export default class Chunk {
 
     this.isLoaded = true
   }
-}
-
-class Tile extends Phaser.Tilemaps.Tile {
-  static size: number = 16;
-  static sizeExp: number = Math.log2(Tile.size);
 }

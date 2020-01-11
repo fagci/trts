@@ -4,6 +4,7 @@ import { Input } from 'phaser'
 
 type KeyMap = {[key:string]:Input.Keyboard.Key}
 
+
 export default class MainScene extends Phaser.Scene {
   tileSet: Phaser.Tilemaps.Tileset
   tileSetWater: Phaser.Tilemaps.Tileset
@@ -17,12 +18,10 @@ export default class MainScene extends Phaser.Scene {
   movementKeys: KeyMap
   zoomKeys: KeyMap
 
-
+  chunkRadiusToLoad = 3 // TODO: replace with chunks count in view
 
   constructor() {
-    super({
-      key: "MainScene"
-    })
+    super({ key: "MainScene" })
   }
 
   create(): void {
@@ -33,7 +32,6 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
       this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
     )
-
   }
 
   getChunk(x, y) {
@@ -44,12 +42,13 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update() {
-    let snappedChunkX = Math.round(this.followPoint.x >> 8)
-    let snappedChunkY = Math.round(this.followPoint.y >> 8)
-    let SX = snappedChunkX - 2
-    let SY = snappedChunkY - 2
-    let EX = snappedChunkX + 2
-    let EY = snappedChunkY + 2
+    let chunkX = Math.round(this.followPoint.x >> 8)
+    let chunkY = Math.round(this.followPoint.y >> 8)
+    
+    let SX = chunkX - this.chunkRadiusToLoad
+    let SY = chunkY - this.chunkRadiusToLoad
+    let EX = chunkX + this.chunkRadiusToLoad
+    let EY = chunkY + this.chunkRadiusToLoad
 
     for (let x = SX; x < EX; x++) {
       for (let y = SY; y < EY; y++) {
@@ -61,7 +60,7 @@ export default class MainScene extends Phaser.Scene {
     for (let chunk of this.chunks) {
       if (!chunk) continue
 
-      if (Phaser.Math.Distance.Between(snappedChunkX, snappedChunkY, chunk.x, chunk.y) < 3) {
+      if (Phaser.Math.Distance.Between(chunkX, chunkY, chunk.x, chunk.y) <= this.chunkRadiusToLoad) {
         chunk.load()
       } else {
         chunk.unload()
@@ -76,9 +75,15 @@ export default class MainScene extends Phaser.Scene {
     if (this.movementKeys.A.isDown) this.followPoint.x -= speed / zoom
     if (this.movementKeys.D.isDown) this.followPoint.x += speed / zoom
 
-    if (this.zoomKeys.Z.isDown) this.cameras.main.zoom += 0.01
-    if (this.zoomKeys.Z.isDown) this.cameras.main.zoom -= 0.01
+    if (this.zoomKeys.Z.isDown) this.changeZoom(0.01)
+    if (this.zoomKeys.X.isDown) this.changeZoom(-0.01)
 
     this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y)
+  }
+
+  changeZoom(delta) {
+    this.cameras.main.zoom += delta
+    this.cameras.main.zoom = Phaser.Math.Clamp(this.cameras.main.zoom, 0.5, 4)
+    this.chunkRadiusToLoad = 3 / (this.cameras.main.zoom+1)
   }
 }

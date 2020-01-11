@@ -18,7 +18,7 @@ export default class MainScene extends Phaser.Scene {
   movementKeys: KeyMap
   zoomKeys: KeyMap
 
-  chunkRadiusToLoad = 3 // TODO: replace with chunks count in view
+  chunkRadiusToLoad = 3
 
   constructor() {
     super({ key: "MainScene" })
@@ -67,13 +67,12 @@ export default class MainScene extends Phaser.Scene {
       }
     }
 
-    let speed = this.cameraSpeed
-    let zoom = this.cameras.main.zoom
+    let speed = this.cameraSpeed / this.cameras.main.zoom
 
-    if (this.movementKeys.W.isDown) this.followPoint.y -= speed / zoom
-    if (this.movementKeys.S.isDown) this.followPoint.y += speed / zoom
-    if (this.movementKeys.A.isDown) this.followPoint.x -= speed / zoom
-    if (this.movementKeys.D.isDown) this.followPoint.x += speed / zoom
+    if (this.movementKeys.W.isDown) this.followPoint.y -= speed
+    if (this.movementKeys.S.isDown) this.followPoint.y += speed
+    if (this.movementKeys.A.isDown) this.followPoint.x -= speed
+    if (this.movementKeys.D.isDown) this.followPoint.x += speed
 
     if (this.zoomKeys.Z.isDown) this.changeZoom(0.01)
     if (this.zoomKeys.X.isDown) this.changeZoom(-0.01)
@@ -84,6 +83,6 @@ export default class MainScene extends Phaser.Scene {
   changeZoom(delta) {
     this.cameras.main.zoom += delta
     this.cameras.main.zoom = Phaser.Math.Clamp(this.cameras.main.zoom, 0.5, 4)
-    this.chunkRadiusToLoad = 3 / (this.cameras.main.zoom+1)
+    this.chunkRadiusToLoad = this.cameras.main.width >> 7
   }
 }

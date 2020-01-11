@@ -84,7 +84,7 @@ export default class Chunk {
 
     this.tileSet = this.tileMap.addTilesetImage("ss")
 
-    this.tileMap.createStaticLayer(0, this.tileSet, x1 << 4, y1 << 4)
+    this.tileMap.createDynamicLayer(0, this.tileSet, x1 << 4, y1 << 4)
 
     this.isLoaded = true
   }

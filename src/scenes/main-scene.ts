@@ -1,20 +1,23 @@
 import { Noise } from "noisejs"
 import Chunk from "../chunk"
+import { Input } from 'phaser'
+
+type KeyMap = {[key:string]:Input.Keyboard.Key}
 
 export default class MainScene extends Phaser.Scene {
   tileSet: Phaser.Tilemaps.Tileset
   tileSetWater: Phaser.Tilemaps.Tileset
-  keyW: Phaser.Input.Keyboard.Key
-  keyS: Phaser.Input.Keyboard.Key
-  keyA: Phaser.Input.Keyboard.Key
-  keyD: Phaser.Input.Keyboard.Key
-  keyZ: Phaser.Input.Keyboard.Key
   followPoint: Phaser.Math.Vector2
   cameraSpeed: number = 10;
   chunkSize = 16;
   tileSize = 16;
   chunks = [];
   noise = new Noise(1)
+
+  movementKeys: KeyMap
+  zoomKeys: KeyMap
+
+
 
   constructor() {
     super({
@@ -23,11 +26,8 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
-    this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
-    this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
-    this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
-    this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z)
+    this.movementKeys = this.input.keyboard.addKeys('W,S,A,D') as KeyMap
+    this.zoomKeys = this.input.keyboard.addKeys('Z,X') as KeyMap
 
     this.followPoint = new Phaser.Math.Vector2(
       this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
@@ -37,28 +37,23 @@ export default class MainScene extends Phaser.Scene {
   }
 
   getChunk(x, y) {
-    let chunk = null
-    for (let i = 0; i < this.chunks.length; i++) {
-      if (this.chunks[i].x == x && this.chunks[i].y == y) {
-        chunk = this.chunks[i]
-      }
+    for (let chunk of this.chunks) {
+      if (chunk.x === x && chunk.y === y) return chunk
     }
-    return chunk
+    return null
   }
 
   update() {
-    let snappedChunkX =
-      Chunk.size * this.tileSize * Math.round(this.followPoint.x / (Chunk.size * this.tileSize))
-    let snappedChunkY =
-      Chunk.size * this.tileSize * Math.round(this.followPoint.y / (Chunk.size * this.tileSize))
+    let snappedChunkX = Math.round(this.followPoint.x >> 8)
+    let snappedChunkY = Math.round(this.followPoint.y >> 8)
+    let SX = snappedChunkX - 2
+    let SY = snappedChunkY - 2
+    let EX = snappedChunkX + 2
+    let EY = snappedChunkY + 2
 
-    snappedChunkX = snappedChunkX / Chunk.size / this.tileSize
-    snappedChunkY = snappedChunkY / Chunk.size / this.tileSize
-
-    for (let x = snappedChunkX - 2; x < snappedChunkX + 2; x++) {
-      for (let y = snappedChunkY - 2; y < snappedChunkY + 2; y++) {
-        let existingChunk = this.getChunk(x, y)
-        if (existingChunk) continue
+    for (let x = SX; x < EX; x++) {
+      for (let y = SY; y < EY; y++) {
+        if (this.getChunk(x, y)) continue
         this.chunks.push(new Chunk(this, x, y))
       }
     }
@@ -73,22 +68,16 @@ export default class MainScene extends Phaser.Scene {
       }
     }
 
-    if (this.keyW.isDown) {
-      this.followPoint.y -= this.cameraSpeed
-    }
-    if (this.keyS.isDown) {
-      this.followPoint.y += this.cameraSpeed
-    }
-    if (this.keyA.isDown) {
-      this.followPoint.x -= this.cameraSpeed
-    }
-    if (this.keyD.isDown) {
-      this.followPoint.x += this.cameraSpeed
-    }
+    let speed = this.cameraSpeed
+    let zoom = this.cameras.main.zoom
 
-    if (this.keyZ.isDown) {
-      this.cameras.main.zoom += 0.1
-    }
+    if (this.movementKeys.W.isDown) this.followPoint.y -= speed / zoom
+    if (this.movementKeys.S.isDown) this.followPoint.y += speed / zoom
+    if (this.movementKeys.A.isDown) this.followPoint.x -= speed / zoom
+    if (this.movementKeys.D.isDown) this.followPoint.x += speed / zoom
+
+    if (this.zoomKeys.Z.isDown) this.cameras.main.zoom += 0.01
+    if (this.zoomKeys.Z.isDown) this.cameras.main.zoom -= 0.01
 
     this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y)
   }

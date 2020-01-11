@@ -15,9 +15,6 @@
       "team": "BETA"
     },
     "Solid": {},
-    "Debug": {
-      "debugTextTemplate": "#${this.entity._uid}\nTeam: ${this.entity.Team.value}"
-    }
   },
   "TurretGun": {
     "RenderObject": {
@@ -47,9 +44,6 @@
       "capacity": 100,
       "type": "FUEL"
     },
-    "Debug": {
-      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyGenerator.capacity|0}/${this.entity.EnergyGenerator.totalCapacity}"
-    },
     "Solid": {},
     "Health": {"max": 500}
   },
@@ -61,23 +55,17 @@
       "totalCapacity": 10,
       "capacity": 0
     },
-    "Debug": {
-      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyTransponder.capacity|0}/${this.entity.EnergyTransponder.totalCapacity}"
-    },
     "Solid": {},
     "Health": {"max": 200}
   },
   "EC": {
     "RenderObject": {
-      "texture": "cover_red"
+      "texture": ""
     },
     "EnergyConsumer": {
       "totalCapacity": 10,
       "capacity": 0,
       "load": 2
-    },
-    "Debug": {
-      "debugTextTemplate": "#${this.entity._uid}\nE: ${this.entity.EnergyConsumer.capacity|0}/${this.entity.EnergyConsumer.totalCapacity}"
     },
     "Solid": {},
     "Health": {"max": 500}

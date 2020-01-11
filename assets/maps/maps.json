@@ -2,28 +2,36 @@
   "Test": {
     "entities": [
       {
-        "Turret": {"Position": {"x": 4096, "y": 4160}, "Team": {"value": "Alpha"}}
+        "type": "Turret",
+        "components": {"Position": {"x": 4096, "y": 4160}, "Team": {"value": "Alpha"}}
       },
       {
-        "Turret": {"Position": {"x": 4032, "y": 4032}, "Team": {"value": "Beta"}}
+        "type": "Turret",
+        "components": {"Position": {"x": 4032, "y": 4032}, "Team": {"value": "Beta"}}
       },
       {
-        "EG": {"Position": {"x": 3904, "y": 4096}}
+        "type": "EG",
+        "components": {"Position": {"x": 3904, "y": 4096}}
       },
       {
-        "ER": {"Position": {"x": 3968, "y": 4096}}
+        "type": "ER",
+        "components": {"Position": {"x": 3968, "y": 4096}}
       },
       {
-        "ER": {"Position": {"x": 4096, "y": 4096}}
+        "type": "ER",
+        "components": {"Position": {"x": 4096, "y": 4096}}
       },
       {
-        "ER": {"Position": {"x": 4160, "y": 4032}}
+        "type": "ER",
+        "components": {"Position": {"x": 4160, "y": 4032}}
       },
       {
-        "ER": {"Position": {"x": 4160, "y": 4160}}
+        "type": "ER",
+        "components": {"Position": {"x": 4160, "y": 4160}}
       },
       {
-        "EC": {"Position": {"x": 4160, "y": 4096}}
+        "type": "EC",
+        "components": {"Position": {"x": 4160, "y": 4096}}
       }
     ]
   }

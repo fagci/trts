@@ -1,6 +1,8 @@
 import { Noise } from "noisejs"
 import Chunk from "../chunk"
 import { Input } from 'phaser'
+import EntityManager from '../ecs/entity-manager'
+import * as Components from '../components/components'
 
 type KeyMap = { [key: string]: Input.Keyboard.Key }
 
@@ -9,7 +11,7 @@ export default class MainScene extends Phaser.Scene {
   tileSet: Phaser.Tilemaps.Tileset
   tileSetWater: Phaser.Tilemaps.Tileset
   followPoint: Phaser.Math.Vector2
-  cameraSpeed: number = 10
+  cameraSpeed: number = 64
   chunks = []
   noise: Noise
 
@@ -17,28 +19,89 @@ export default class MainScene extends Phaser.Scene {
   zoomKeys: KeyMap
 
   chunkRadiusToLoad = 3
+  dragPoint: Phaser.Math.Vector2
 
   constructor() {
     super({ key: "MainScene" })
   }
 
   create(): void {
+
     this.scene.launch('UIScene')
     this.noise = new Noise(1)
     this.movementKeys = this.input.keyboard.addKeys('W,S,A,D') as KeyMap
     this.zoomKeys = this.input.keyboard.addKeys('Z,X') as KeyMap
 
-    this.followPoint = new Phaser.Math.Vector2(
-      this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
-      this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
-    )
+    // this.followPoint = new Phaser.Math.Vector2(
+    //   this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
+    //   this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
+    // )
 
-    
+    this.followPoint = new Phaser.Math.Vector2(4096, 4096)
+
     this.input.on('wheel', e => {
       this.changeZoom(-e.deltaY / 1000)
     })
 
     this.updateCamera()
+
+    // TODO: move to map creator
+
+    const entities = this.cache.json.get('entities')
+    const maps = this.cache.json.get('maps')
+    const testMap = maps.Test
+    console.log(testMap)
+
+    const entityLayer = this.add.group({classType: Phaser.GameObjects.Sprite})
+
+    entityLayer.setDepth(5000)
+
+    for(let mapEntity of testMap.entities) {
+      const entityName = mapEntity.type
+      let entityDefComponents = entities[entityName]
+      let entityMapComponents = mapEntity.components
+      let mergedComponents = Phaser.Utils.Objects.Merge(entityMapComponents, entityDefComponents)
+
+      console.log(mergedComponents)
+
+      let entity = EntityManager.create(entityName)
+
+      for(let componentName in mergedComponents) {
+        let componentOptions = mergedComponents[componentName]
+        let Component = Components[componentName]
+        if(!Component) {
+          console.warn(`Component ${componentName} not exists`)
+          continue
+        }
+        let component = new Component(componentOptions)
+        entity.addComponent(component)
+      }
+
+      let {RenderObject, Position, EnergyGenerator, EnergyTransponder} = entity.components
+
+      if(RenderObject) {
+        if(EnergyGenerator || EnergyTransponder) {
+          this.add.graphics()
+            .fillStyle(0x0000ff, 0.24)
+            .fillCircle(Position.x, Position.y, (EnergyGenerator || EnergyTransponder).range)
+        }
+        let texture = RenderObject.texture
+        if(texture instanceof Array) {
+          let animationKey = texture.toString()
+          this.anims.create({
+            key: animationKey,
+            frameRate: 2,
+            duration: -1,
+            frames: this.anims.generateFrameNames('swss', {frames: texture})
+          })
+          entityLayer.create(Position.x, Position.y, 'swss', texture[0]).play(animationKey)
+        } else {
+          entityLayer.create(Position.x, Position.y, 'swss', texture)
+        }
+      }
+
+      document.body.appendChild(entity)
+    }
   }
 
   getChunk(x, y) {
@@ -48,7 +111,7 @@ export default class MainScene extends Phaser.Scene {
     return null
   }
 
-  update() {
+  update(time, delta) {
     let chunkX = Math.round(this.followPoint.x >> 8)
     let chunkY = Math.round(this.followPoint.y >> 8)
 
@@ -77,21 +140,20 @@ export default class MainScene extends Phaser.Scene {
 
 
     if (this.game.input.activePointer.isDown) {
-      if (this.game.origDragPoint) {
-        // move the camera by the amount the mouse has moved since last update
+      if (this.dragPoint) {
         this.addPosition(
-          this.game.origDragPoint.x - this.game.input.activePointer.position.x,
-          this.game.origDragPoint.y - this.game.input.activePointer.position.y
+          this.dragPoint.x - this.game.input.activePointer.position.x,
+          this.dragPoint.y - this.game.input.activePointer.position.y
         )
-      } // set new drag origin to current position
-      this.game.origDragPoint = this.game.input.activePointer.position.clone()
+      }
+      this.dragPoint = this.game.input.activePointer.position.clone()
     } else {
-      this.game.origDragPoint = null
+      this.dragPoint = null
     }
 
 
 
-    let speed = this.cameraSpeed / this.cameras.main.zoom
+    let speed = this.cameraSpeed / this.cameras.main.zoom * delta / 100
 
     if (this.movementKeys.W.isDown) this.addPosition(0, -speed)
     if (this.movementKeys.S.isDown) this.addPosition(0, speed)

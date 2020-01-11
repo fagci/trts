@@ -1,5 +1,12 @@
 import Entity from '../ecs/entity'
 
+export class RenderObject {
+  texture: string | []
+  constructor(options?: object) {
+    if (options) Object.assign(this, options)
+  }
+}
+
 export class Health {
   max: number = 100
   value: number = 100
@@ -77,10 +84,10 @@ export class Dissolve {
 }
 
 const PowerSource = {
-  AIR: {current: 0.05},
-  THERMAL: {current: 0.01},
-  MECHANICAL: {current: 1},
-  FUEL: {current: 3.9},
+  AIR: { current: 0.05 },
+  THERMAL: { current: 0.01 },
+  MECHANICAL: { current: 1 },
+  FUEL: { current: 3.9 },
 }
 
 export class Energy {

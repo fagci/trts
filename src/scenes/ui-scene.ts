@@ -16,13 +16,13 @@ export default class UIScene extends Phaser.Scene {
   update() {
     const mainCamera = this.scene.get('MainScene').cameras.main
     
-    const CX = mainCamera.scrollX + mainCamera.centerX
-    const CY = mainCamera.scrollY + mainCamera.centerY
+    const CX = mainCamera.worldView.centerX
+    const CY = mainCamera.worldView.centerY
 
     const CTX = CX >> 4
     const CTY = CY >> 4
 
-    this.debugText.setText(`Camera pos: X ${CTX.toFixed(0)}, Y ${CTY.toFixed(0)}
-Camera zoom: ${mainCamera.zoom.toFixed(2)}`)
+    this.debugText.setText(`Cam tile pos: X ${CTX.toFixed(0)}, Y ${CTY.toFixed(0)}
+Cam zoom: ${mainCamera.zoom.toFixed(2)}`)
   }
 }

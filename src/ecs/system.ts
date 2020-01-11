@@ -7,13 +7,13 @@ export default class System {
   deps: string[] = []
   group: Entity[]
 
-  static update(d: number) {
+  static update(time: number, delta: number) {
     for (let name in this.systems) {
       let system = this.systems[name]
       if (EntityManager.hasNewMember || system.group.length == 0) {
         system.group = EntityManager.getEntities(system.deps)
       }
-      system.update(d)
+      system.update(time, delta)
     }
     EntityManager.hasNewMember = false
   }
@@ -26,7 +26,7 @@ export default class System {
     this.systems[system.deps.toString()] = null
   }
 
-  update(d: number) {
+  update(time: number, delta: number) {
 
   }
 }

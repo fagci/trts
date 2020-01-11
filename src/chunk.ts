@@ -79,12 +79,12 @@ export default class Chunk {
     this.tileMap = this.scene.make.tilemap({
       data,
       tileWidth: 16,
-      tileHeight: 16
+      tileHeight: 16,
     })
 
-    this.tileSet = this.tileMap.addTilesetImage("ss")
+    this.tileSet = this.tileMap.addTilesetImage("ssex",null,16,16,1,2)
 
-    this.tileMap.createDynamicLayer(0, this.tileSet, x1 << 4, y1 << 4)
+    this.tileMap.createStaticLayer(0, this.tileSet, x1 << 4, y1 << 4)
 
     this.isLoaded = true
   }

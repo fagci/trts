@@ -2,18 +2,16 @@ import { Noise } from "noisejs"
 import Chunk from "../chunk"
 import { Input } from 'phaser'
 
-type KeyMap = {[key:string]:Input.Keyboard.Key}
+type KeyMap = { [key: string]: Input.Keyboard.Key }
 
 
 export default class MainScene extends Phaser.Scene {
   tileSet: Phaser.Tilemaps.Tileset
   tileSetWater: Phaser.Tilemaps.Tileset
   followPoint: Phaser.Math.Vector2
-  cameraSpeed: number = 10;
-  chunkSize = 16;
-  tileSize = 16;
-  chunks = [];
-  noise = new Noise(1)
+  cameraSpeed: number = 10
+  chunks = []
+  noise: Noise
 
   movementKeys: KeyMap
   zoomKeys: KeyMap
@@ -25,6 +23,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.noise = new Noise(1)
     this.movementKeys = this.input.keyboard.addKeys('W,S,A,D') as KeyMap
     this.zoomKeys = this.input.keyboard.addKeys('Z,X') as KeyMap
 
@@ -44,7 +43,7 @@ export default class MainScene extends Phaser.Scene {
   update() {
     let chunkX = Math.round(this.followPoint.x >> 8)
     let chunkY = Math.round(this.followPoint.y >> 8)
-    
+
     let SX = chunkX - this.chunkRadiusToLoad
     let SY = chunkY - this.chunkRadiusToLoad
     let EX = chunkX + this.chunkRadiusToLoad

@@ -1,3 +1,5 @@
+import MainScene from './main-scene'
+
 export default class UIScene extends Phaser.Scene {
   debugText: Phaser.GameObjects.Text
   constructor () {
@@ -20,17 +22,20 @@ export default class UIScene extends Phaser.Scene {
   }
 
   update() {
-    const mainCamera = this.scene.get('MainScene').cameras.main
-    
-    const CX = mainCamera.worldView.centerX
-    const CY = mainCamera.worldView.centerY
+    const mainScene: MainScene = this.scene.get('MainScene')
+    const mainCamera = mainScene.cameras.main
+    const camWorldVieww = mainCamera.worldView
+    const CX = camWorldVieww.centerX
+    const CY = camWorldVieww.centerY
 
     const CTX = CX >> 4
     const CTY = CY >> 4
 
     this.debugText.setText([
+      `Loaded chunks: ${Object.keys(mainScene.mapManager.chunks).length}`,
       `Cam tile pos: X ${CTX.toFixed(0)}, Y ${CTY.toFixed(0)}`,
       `Cam zoom: ${mainCamera.zoom.toFixed(2)}`,
+      `Cam bounds: ${camWorldVieww.top | 0},${camWorldVieww.right | 0},${camWorldVieww.bottom | 0},${camWorldVieww.left | 0}`
     ])
   }
 }

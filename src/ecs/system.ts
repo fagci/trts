@@ -20,6 +20,7 @@ export default class System {
 
   static addSystem(system: System) {
     this.systems[system.deps.toString()] = system
+    return this
   }
 
   static removeSystem(system: System) {

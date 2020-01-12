@@ -12,22 +12,31 @@ export default class Chunk {
   isLoaded: boolean
   static noise: Noise
   tileMap: Phaser.Tilemaps.Tilemap
-  tileSet: Phaser.Tilemaps.Tileset
+  mapLayer: Phaser.Tilemaps.DynamicTilemapLayer
+  mapLayerWater: Phaser.Tilemaps.DynamicTilemapLayer
 
   constructor(scene, x, y) {
     this.scene = scene
     if (!Chunk.noise) Chunk.noise = scene.noise
     this.x = x
     this.y = y
+
+    this.tileMap = this.scene.make.tilemap({
+      tileWidth: 16,
+      tileHeight: 16,
+      width: 16,
+      height: 16
+    })
+
+    const tileSet = this.tileMap.addTilesetImage("mc", null, 16, 16, 1, 2)
+
+    this.mapLayer = this.tileMap.createBlankDynamicLayer('mapLayer', tileSet, this.x << 8, this.y << 8).setDepth(-1)
+    this.mapLayerWater = this.tileMap.createBlankDynamicLayer('mapLayerWater', tileSet, this.x << 8, this.y << 8).setDepth(-1)
   }
 
   unload() {
     if (!this.isLoaded) return
-    this.isLoaded = true
-    this.tileMap.destroy()
-    this.isLoaded = false
-    this.tileMap = null
-    this.tileSet = null
+    this.tileMap.removeAllLayers()
   }
 
   static getHeight(i: number, j: number) {
@@ -50,35 +59,23 @@ export default class Chunk {
 
   load() {
     if (this.isLoaded) return
-
     const x1 = this.x << Chunk.sizeExp
     const y1 = this.y << Chunk.sizeExp
 
     const x2 = (this.x + 1) << Chunk.sizeExp
     const y2 = (this.y + 1) << Chunk.sizeExp
 
-    const data = []
-
     for (let y = y1; y < y2; y++) {
-      let row = []
       for (let x = x1; x < x2; x++) {
         let v = Chunk.getHeight(x, y)
         let b = Chunk.getBiome(v)
-        row.push(b)
+        this.mapLayer.putTileAt(b, x - x1, y - y1)
+        if (v < 0) this.mapLayerWater.putTileAt(326, x - x1, y - y1)
       }
-      data.push(row)
     }
 
-    this.tileMap = this.scene.make.tilemap({
-      data,
-      tileWidth: 16,
-      tileHeight: 16,
-    })
-
-    this.tileSet = this.tileMap.addTilesetImage("mc", null, 16, 16, 1, 2)
-
-    this.tileMap.createStaticLayer(0, this.tileSet, x1 << 4, y1 << 4).setDepth(-1)
-
     this.isLoaded = true
+
+    return null
   }
 }

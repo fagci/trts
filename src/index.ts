@@ -15,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
   pixelArt: true,
   roundPixels: true,
   disableContextMenu: true,
-  backgroundColor: '#cceeff',
+  backgroundColor: '#eda',
   scale: {
     mode: Phaser.Scale.ScaleModes.RESIZE,
   },

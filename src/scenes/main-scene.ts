@@ -1,8 +1,7 @@
 import { Noise } from "noisejs"
 import Chunk from "../chunk"
 import { Input } from 'phaser'
-import EntityManager from '../ecs/entity-manager'
-import * as Components from '../components/components'
+import MapManager from '../map-manager'
 
 type KeyMap = { [key: string]: Input.Keyboard.Key }
 
@@ -47,59 +46,19 @@ export default class MainScene extends Phaser.Scene {
 
     // TODO: move to map creator
 
-    const entities = this.cache.json.get('entities')
-    const maps = this.cache.json.get('maps')
-    const testMap = maps.Test
-    console.log(testMap)
+    const mapManager = new MapManager(this, 'Test')
 
-    for(let mapEntity of testMap.entities) {
-      const entityName = mapEntity.type
-      let entityDefComponents = entities[entityName]
-      let entityMapComponents = mapEntity.components
-      let mergedComponents = Phaser.Utils.Objects.Merge(entityMapComponents, entityDefComponents)
-
-      console.log(mergedComponents)
-
-      let entity = EntityManager.create(entityName)
-
-      for(let componentName in mergedComponents) {
-        let componentOptions = mergedComponents[componentName]
-        let Component = Components[componentName]
-        if(!Component) {
-          console.warn(`Component ${componentName} not exists`)
-          continue
-        }
-        let component = new Component(componentOptions)
-        entity.addComponent(component)
-      }
-
-      let {RenderObject, Position, EnergyGenerator, EnergyTransponder} = entity.components
-
-      if(RenderObject) {
-        if(EnergyGenerator || EnergyTransponder) {
-          this.add.graphics()
-            .fillStyle(0x0000ff, 0.24)
-            .fillCircle(Position.x, Position.y, (EnergyGenerator || EnergyTransponder).range)
-            .setDepth(1)
-        }
-        let texture = RenderObject.texture
-        if(texture instanceof Array) {
-          let animationKey = texture.toString()
-          this.anims.create({
-            key: animationKey,
-            frameRate: 2,
-            duration: -1,
-            frames: this.anims.generateFrameNames('swss', {frames: texture})
-          })
-          this.add.sprite(Position.x, Position.y, 'swss', texture[0]).play(animationKey).setDepth(10)
-        } else {
-          this.add.image(Position.x, Position.y, 'swss', texture).setDepth(10)
-        }
-      }
-
-      document.body.appendChild(entity)
-    }
+    this.input.on('pointerup', this.onPointerUp, this);
   }
+
+  onPointerUp(pointer: Phaser.Input.Pointer) {
+    const x = this.cameras.main.scrollX + pointer.x
+    const y = this.cameras.main.scrollY + pointer.y
+
+    console.log(`Pointer up at ${x},${y}`)
+  }
+
+
 
   getChunk(x, y) {
     for (let chunk of this.chunks) {

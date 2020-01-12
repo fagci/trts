@@ -52,10 +52,6 @@ export default class MainScene extends Phaser.Scene {
     const testMap = maps.Test
     console.log(testMap)
 
-    const entityLayer = this.add.group({classType: Phaser.GameObjects.Sprite})
-
-    entityLayer.setDepth(5000)
-
     for(let mapEntity of testMap.entities) {
       const entityName = mapEntity.type
       let entityDefComponents = entities[entityName]
@@ -84,6 +80,7 @@ export default class MainScene extends Phaser.Scene {
           this.add.graphics()
             .fillStyle(0x0000ff, 0.24)
             .fillCircle(Position.x, Position.y, (EnergyGenerator || EnergyTransponder).range)
+            .setDepth(1)
         }
         let texture = RenderObject.texture
         if(texture instanceof Array) {
@@ -94,9 +91,9 @@ export default class MainScene extends Phaser.Scene {
             duration: -1,
             frames: this.anims.generateFrameNames('swss', {frames: texture})
           })
-          entityLayer.create(Position.x, Position.y, 'swss', texture[0]).play(animationKey)
+          this.add.sprite(Position.x, Position.y, 'swss', texture[0]).play(animationKey).setDepth(10)
         } else {
-          entityLayer.create(Position.x, Position.y, 'swss', texture)
+          this.add.image(Position.x, Position.y, 'swss', texture).setDepth(10)
         }
       }
 

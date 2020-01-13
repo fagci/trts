@@ -1,5 +1,5 @@
 import Entity from '../ecs/entity'
-import { Health } from '../components/components'
+import {Health} from '../components/components'
 
 export default class HealthBar extends Phaser.GameObjects.Graphics {
   barBgRect: Phaser.Geom.Rectangle
@@ -13,7 +13,7 @@ export default class HealthBar extends Phaser.GameObjects.Graphics {
 
   constructor(scene: Phaser.Scene, entity: Entity) {
     super(scene)
-    
+
     this.entity = entity
     this.health = entity.components.Health
 
@@ -26,7 +26,7 @@ export default class HealthBar extends Phaser.GameObjects.Graphics {
     this.barFgRect.width = this.width * (this.health.value / this.health.max)
     this
       .clear()
-      .fillStyle(this.health.value / this.health.max < 0.25 ? 0xee0000: 0x00ee00)
+      .fillStyle(this.health.value / this.health.max < 0.25 ? 0xee0000 : 0x00ee00)
       .lineStyle(1, 0)
       .strokeRectShape(this.barBgRect)
       .fillRectShape(this.barFgRect)

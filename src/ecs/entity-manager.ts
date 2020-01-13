@@ -1,8 +1,8 @@
 import Entity from './entity'
 
 export default class EntityManager {
-  private static _eid = 0
   static hasNewMember: boolean = false
+  private static _eid = 0
   private static readonly entityTag: string = 'ecs-entity'
 
   static create(name?: string) {

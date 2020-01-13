@@ -1,16 +1,15 @@
-import { Noise } from "noisejs"
-import MainScene from "./scenes/main-scene"
+import {Noise} from 'noisejs'
+import MainScene from './scenes/main-scene'
 
 export default class Chunk {
-  static size: number = 16;
+  static size: number = 16
 
-  static sizeExp: number = Math.log2(Chunk.size);
-
+  static sizeExp: number = Math.log2(Chunk.size)
+  static noise: Noise
   scene: MainScene
   x: number
   y: number
   isLoaded: boolean
-  static noise: Noise
   tileMap: Phaser.Tilemaps.Tilemap
   mapLayer: Phaser.Tilemaps.DynamicTilemapLayer
   mapLayerWater: Phaser.Tilemaps.DynamicTilemapLayer
@@ -25,18 +24,13 @@ export default class Chunk {
       tileWidth: 16,
       tileHeight: 16,
       width: 16,
-      height: 16
+      height: 16,
     })
 
-    const tileSet = this.tileMap.addTilesetImage("mc", null, 16, 16, 1, 2)
+    const tileSet = this.tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
 
     this.mapLayer = this.tileMap.createBlankDynamicLayer('mapLayer', tileSet, this.x << 8, this.y << 8).setDepth(-1)
     this.mapLayerWater = this.tileMap.createBlankDynamicLayer('mapLayerWater', tileSet, this.x << 8, this.y << 8).setDepth(-1)
-  }
-
-  unload() {
-    if (!this.isLoaded) return
-    this.tileMap.removeAllLayers()
   }
 
   static getHeight(i: number, j: number) {
@@ -56,6 +50,10 @@ export default class Chunk {
     return 98 // snow
   }
 
+  unload() {
+    if (!this.isLoaded) return
+    this.tileMap.removeAllLayers()
+  }
 
   load() {
     if (this.isLoaded) return

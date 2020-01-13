@@ -4,7 +4,7 @@ import System from './ecs/system'
 import MovingSystem from './systems/moving'
 import RenderSystem from './systems/render'
 import HealthBar from './ui/health-bar'
-import Chunk from "./chunk"
+import Chunk from './chunk'
 
 
 export default class MapManager {
@@ -61,7 +61,7 @@ export default class MapManager {
   }
 
   onCameraUpdate() {
-    let { left, top, right, bottom } = this.scene.cameras.main.worldView
+    let {left, top, right, bottom} = this.scene.cameras.main.worldView
 
     let SX = (left >> 8) - 2
     let SY = (top >> 8) - 2
@@ -97,14 +97,14 @@ export default class MapManager {
     System.update(time, delta)
   }
 
-  private postProcessEntityComponents(entity: import("/home/fagci/IdeaProjects/trts/src/ecs/entity").default) {
-    let { RenderObject, Health, Position, EnergyGenerator, EnergyTransponder } = entity.components
+  private postProcessEntityComponents(entity: import('/home/fagci/IdeaProjects/trts/src/ecs/entity').default) {
+    let {RenderObject, Health, Position, EnergyGenerator, EnergyTransponder} = entity.components
     let energySource = EnergyGenerator || EnergyTransponder
 
     if (RenderObject) {
       let texture = RenderObject.texture
       let scene = this.scene
-      let { x, y } = Position
+      let {x, y} = Position
 
       if (energySource) {
         const energyField = scene.add.graphics()
@@ -145,7 +145,7 @@ export default class MapManager {
       key: animationKey,
       frameRate: 12,
       repeat: -1,
-      frames: this.scene.anims.generateFrameNames('swss', { frames })
+      frames: this.scene.anims.generateFrameNames('swss', {frames}),
     })
     return animationKey
   }

@@ -1,5 +1,5 @@
-import { Noise } from "noisejs"
-import { Input } from 'phaser'
+import {Noise} from 'noisejs'
+import {Input} from 'phaser'
 import MapManager from '../map-manager'
 
 type KeyMap = { [key: string]: Input.Keyboard.Key }
@@ -18,7 +18,7 @@ export default class MainScene extends Phaser.Scene {
   mapManager: MapManager
 
   constructor() {
-    super({ key: "MainScene" })
+    super({key: 'MainScene'})
   }
 
   create(): void {
@@ -59,7 +59,7 @@ export default class MainScene extends Phaser.Scene {
       if (this.dragPoint) {
         this.addPosition(
           this.dragPoint.x - this.game.input.activePointer.position.x,
-          this.dragPoint.y - this.game.input.activePointer.position.y
+          this.dragPoint.y - this.game.input.activePointer.position.y,
         )
       }
       this.dragPoint = this.game.input.activePointer.position.clone()

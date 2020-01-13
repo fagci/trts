@@ -1,4 +1,4 @@
-import { Geom } from 'phaser'
+import {Geom} from 'phaser'
 
 export default class BootScene extends Phaser.Scene {
   progressBgRect: Geom.Rectangle
@@ -12,10 +12,10 @@ export default class BootScene extends Phaser.Scene {
 
   loadResources() {
     this.load
-      .image("mc", require("../../assets/gfx/mc.png"))
-      .atlas('swss', require("../../assets/gfx/swss.png"), require("../../assets/gfx/swss.json"))
-      .json('entities', require("../../assets/entities/entities.json"))
-      .json('maps', require("../../assets/maps/maps.json"))
+      .image('mc', require('../../assets/gfx/mc.png'))
+      .atlas('swss', require('../../assets/gfx/swss.png'), require('../../assets/gfx/swss.json'))
+      .json('entities', require('../../assets/entities/entities.json'))
+      .json('maps', require('../../assets/maps/maps.json'))
   }
 
   create() {
@@ -39,8 +39,8 @@ export default class BootScene extends Phaser.Scene {
     this.progressBgRect = new Geom.Rectangle(32, SH / 2, SW - 64, 16)
     Geom.Rectangle.CenterOn(this.progressBgRect, 0.5 * SW, 0.5 * SH)
     this.progressFgRect = Geom.Rectangle.Clone(this.progressBgRect)
-    
-    this.text = this.add.text(32, SH / 2 - 32, 'Loading...', { color: '#246', smoothed: false })
+
+    this.text = this.add.text(32, SH / 2 - 32, 'Loading...', {color: '#246', smoothed: false})
   }
 
   private onLoadProgress(value) {

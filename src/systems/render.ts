@@ -4,7 +4,7 @@ import * as Components from '../components/components'
 
 export default class RenderSystem extends System {
   deps = [
-    Components.RenderObject.name
+    Components.RenderObject.name,
   ]
 
   update(time, delta) {
@@ -13,10 +13,10 @@ export default class RenderSystem extends System {
       let Health: Components.Health
       let Selectable: Components.Selectable
       let Slots: Components.Slots
-      
-      ({ RenderObject, Health, Selectable, Slots } = entity.components)
 
-      
+      ({RenderObject, Health, Selectable, Slots} = entity.components)
+
+
     }
   }
 }

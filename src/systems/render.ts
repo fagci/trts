@@ -16,7 +16,7 @@ export default class RenderSystem extends System {
 
       ({RenderObject, Health, Selectable, Slots} = entity.components)
 
-
+      if(RenderObject.gameObject) RenderObject.gameObject.update()
     }
   }
 }

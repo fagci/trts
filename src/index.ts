@@ -1,4 +1,5 @@
 import 'phaser'
+import DebugDrawPlugin from 'phaser-plugin-debug-draw';
 import BootScene from './scenes/boot-scene'
 import Game from './game'
 import MainScene from './scenes/main-scene'
@@ -11,6 +12,15 @@ const config: Phaser.Types.Core.GameConfig = {
     MainScene,
     UIScene,
   ],
+  plugins: {
+    scene: [
+      {
+        key: 'DebugDrawPlugin',
+        plugin: DebugDrawPlugin,
+        mapping: 'debugDraw'
+      }
+    ]
+  },
   banner: false,
   pixelArt: true,
   roundPixels: true,

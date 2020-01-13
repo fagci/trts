@@ -1,8 +1,9 @@
 import Entity from '../ecs/entity'
 
 export class RenderObject {
-  texture: string | []
-  container: Phaser.GameObjects.Container
+  texture: string
+  animation: string
+  gameObject: Phaser.GameObjects.GameObject
 
   constructor(options?: object) {
     if (options) Object.assign(this, options)

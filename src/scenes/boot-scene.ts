@@ -19,6 +19,13 @@ export default class BootScene extends Phaser.Scene {
   }
 
   create() {
+    this.anims.create({
+      key: 'generator',
+      frameRate: 12,
+      repeat: -1,
+      frames: this.anims.generateFrameNames('swss', {frames: ['base_1', 'base_2', 'base_3', 'base_4']}),
+    })
+
     this.scene.start('MainScene')
   }
 

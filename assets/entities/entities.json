@@ -35,9 +35,9 @@
     "Position": {},
     "Solid": {}
   },
-  "EG": {
+  "EnergyGenerator": {
     "RenderObject": {
-      "texture": ["base_1", "base_2", "base_3", "base_4"]
+      "animation": "generator"
     },
     "EnergyGenerator": {
       "totalCapacity": 1000,

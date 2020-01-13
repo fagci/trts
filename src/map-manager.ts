@@ -3,8 +3,10 @@ import * as Components from './components/components'
 import System from './ecs/system'
 import MovingSystem from './systems/moving'
 import RenderSystem from './systems/render'
-import HealthBar from './ui/health-bar'
 import Chunk from './chunk'
+
+import * as Prefabs from './prefabs'
+import Entity from './ecs/entity'
 
 
 export default class MapManager {
@@ -97,56 +99,17 @@ export default class MapManager {
     System.update(time, delta)
   }
 
-  private postProcessEntityComponents(entity: import('/home/fagci/IdeaProjects/trts/src/ecs/entity').default) {
-    let {RenderObject, Health, Position, EnergyGenerator, EnergyTransponder} = entity.components
-    let energySource = EnergyGenerator || EnergyTransponder
-
+  private postProcessEntityComponents(entity: Entity) {
+    let {RenderObject} = entity.components
     if (RenderObject) {
-      let texture = RenderObject.texture
-      let scene = this.scene
-      let {x, y} = Position
-
-      if (energySource) {
-        const energyField = scene.add.graphics()
-          .fillStyle(0x0000ff, 0.24)
-          .fillCircle(x, y, energySource.range)
-          .setDepth(1)
-
-        this.bottomLayer.add(energyField)
-      }
-
-      let sprite: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image
-      if (texture instanceof Array) {
-        let animationKey = this.createAnimation(texture)
-        sprite = scene.add.sprite(x, y, 'swss').play(animationKey)
+      const prefabName = entity.dataset.name
+      const Prefab = Prefabs[prefabName]
+      if (Prefab) {
+        RenderObject.gameObject = new Prefab(this.scene, entity)
       } else {
-        sprite = scene.add.image(x, y, 'swss', texture)
+        console.warn(`Prefab ${prefabName} not found`)
       }
-
-      if (Health) {
-        let healthBar = new HealthBar(scene, entity)
-        healthBar.setPosition(x - healthBar.width / 2, y - sprite.height / 2 - healthBar.height - 4)
-        healthBar.setDepth(10)
-        scene.add.existing(healthBar)
-        this.interfaceLayer.add(healthBar)
-      }
-
-      sprite.setDepth(5)
-
-      this.entityLayer.add(sprite)
     }
     return entity
-  }
-
-  private createAnimation(frames: string[]) {
-    let animationKey = frames.toString()
-    if (this.scene.anims.get(animationKey)) return animationKey
-    this.scene.anims.create({
-      key: animationKey,
-      frameRate: 12,
-      repeat: -1,
-      frames: this.scene.anims.generateFrameNames('swss', {frames}),
-    })
-    return animationKey
   }
 }

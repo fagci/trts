@@ -3579,7 +3579,12 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-phaser@^3.21.0:
+phaser-plugin-debug-draw@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/phaser-plugin-debug-draw/-/phaser-plugin-debug-draw-4.3.0.tgz#a29546c0da03fe4406bb00d61f7f703fb88c59aa"
+  integrity sha512-lLdsIuLREZsLIcFi4ri9vl9siauqx0iSY0AHU6+wp554/+8TbB2qRAP2Kd0N/8klbwUnsrCezJ3w5WiTACs4xQ==
+
+phaser@^3.19.0:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.21.0.tgz#e0c074ec1520d951bfe3991588a638bc0478f7c1"
   integrity sha512-hcystLbTfeObD3DVG0nRzdLSZxcU4C8g+wzXZCl2a5CupPHxFdA3RJNELtWGs3UlFJAHHi0Xm6e7xliv08V/aA==

@@ -22,8 +22,7 @@
     },
     "Armed": {
       "type": "MACHINE_GUN"
-    },
-    "Position": {}
+    }
   },
   "Bullet": {
     "RenderObject": {

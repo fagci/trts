@@ -15,8 +15,8 @@ export default class MovingSystem extends System {
       if (Position && Moving) { // TODO: if is static, pass or remove entire Velocity component
         let {force, velocity, mass, maxVelocity} = Moving
 
-        velocity.x += force.x * d / mass
-        velocity.y += force.y * d / mass
+        velocity.x += force.x * delta / mass
+        velocity.y += force.y * delta / mass
 
 
         velocity.x = Phaser.Math.Clamp(velocity.x, 0, maxVelocity)

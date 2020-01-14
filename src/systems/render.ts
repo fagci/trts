@@ -10,11 +10,8 @@ export default class RenderSystem extends System {
   update(time, delta) {
     for (const entity of this.group) {
       let RenderObject: Components.RenderObject
-      let Health: Components.Health
-      let Selectable: Components.Selectable
-      let Slots: Components.Slots
 
-      ({RenderObject, Health, Selectable, Slots} = entity.components)
+      ({RenderObject} = entity.components)
 
       if(RenderObject.gameObject) RenderObject.gameObject.update()
     }

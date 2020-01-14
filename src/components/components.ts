@@ -96,67 +96,39 @@ const PowerSource = {
 export class Energy {
   totalCapacity: number = 100
   capacity: number = 0
+  range: number = 64
+  connections: {[name: string]: Entity} = {}
 
   constructor(options: { totalCapacity?: number, capacity?: number }) {
     if (options) Object.assign(this, options)
   }
 }
 
-export class EnergyGenerator extends Energy {
+export class EnergyGenerator {
   powerSource: any = PowerSource.THERMAL
   range: number = 64
 
   constructor(options: any) {
-    super(options)
     if (options.type) this.powerSource = PowerSource[options.type]
-  }
-
-  generate() {
-    this.capacity += this.powerSource.current
   }
 }
 
-export class EnergyTransponder extends Energy {
+export class EnergyTransponder {
   source: Entity
   range: number = 128
   current: number = 3
 
   constructor(options: any) {
-    super(options)
     if (options) Object.assign(this, options)
-  }
-
-  takeFrom(source: Energy) {
-    if (this.capacity >= this.totalCapacity) return
-    const taken = Phaser.Math.Clamp(this.current, 0, source.capacity)
-    this.capacity += taken
-    source.capacity -= taken
-    return taken
   }
 }
 
-export class EnergyConsumer extends Energy {
+export class EnergyConsumer {
   source: Entity
   load: number = 1
 
   constructor(options: any) {
-    super(options)
     if (options) Object.assign(this, options)
-  }
-
-  takeFrom(source: Energy) {
-    if (this.capacity >= this.totalCapacity) return
-    const taken = Phaser.Math.Clamp(this.load, 0, source.capacity)
-    this.capacity += taken
-    source.capacity -= taken
-  }
-
-  consume() {
-    if (this.capacity >= this.load) {
-      this.capacity -= this.load
-      return this.load
-    }
-    return 0
   }
 }
 

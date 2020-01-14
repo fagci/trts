@@ -11,7 +11,7 @@
       },
       {
         "type": "EnergyGenerator",
-        "components": {"Position": {"x": 3904, "y": 4096}}
+        "components": {"Position": {"x": 3904, "y": 4128}}
       },
       {
         "type": "EnergyTransponder",
@@ -30,7 +30,7 @@
         "components": {"Position": {"x": 4160, "y": 4160}}
       },
       {
-        "type": "EC",
+        "type": "EnergyConsumer",
         "components": {"Position": {"x": 4160, "y": 4096}}
       }
     ]

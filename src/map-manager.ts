@@ -8,6 +8,7 @@ import Chunk from './chunk'
 
 import * as Prefabs from './prefabs'
 import Entity from './ecs/entity'
+import EnergySystem from './systems/energy'
 
 
 export default class MapManager {
@@ -42,16 +43,15 @@ export default class MapManager {
 
     System
       .addSystem(new MovingSystem())
+      .addSystem(new EnergySystem())
       .addSystem(new RenderSystem())
   }
 
   private createEntityWithComponents(entityName, parent: Entity = document.documentElement as Entity, entityMapComponents?: object) {
     let entityDefComponents = this.entities[entityName]
     let mergedComponents = Phaser.Utils.Objects.Merge(entityMapComponents || {}, entityDefComponents)
-
-    console.log(`Create ${entityName}`)
-
     let entity = EntityManager.create(entityName)
+    
     parent.appendChild(entity)
 
     for (let componentName in mergedComponents) {
@@ -108,26 +108,24 @@ export default class MapManager {
   }
 
   private postProcessEntityComponents(entity: Entity) {
-    console.log(`Postprocess ${entity.dataset.name}`)
     let RenderObject: RenderObject, Slots: Slots
     ({RenderObject, Slots} = entity.components)
+
 
     if (RenderObject) {
       MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
     }
     if (Slots) {
       for (let slotEntityName of Slots.places) {
-        console.log(`Create slot entity ${slotEntityName}`)
         let slotEntity = this.createEntityWithComponents(slotEntityName, entity)
         Slots.items.push(slotEntity)
       }
     }
-    
+
     return entity
   }
 
   static makePrefabForEntity(scene, entity: Entity, parent?: Entity) {
-    console.log(`Make prefab for ${entity.dataset.name}`, parent)
     const prefabName = entity.dataset.name
     const Prefab = Prefabs[prefabName]
     const RenderObject: RenderObject = entity.components.RenderObject

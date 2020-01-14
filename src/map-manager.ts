@@ -42,12 +42,14 @@ export default class MapManager {
       let entity = EntityManager.create(entityName)
 
       for (let componentName in mergedComponents) {
+        if (!mergedComponents.hasOwnProperty(componentName)) continue
         let componentOptions = mergedComponents[componentName]
         let Component = Components[componentName]
         if (!Component) {
           console.warn(`Component ${componentName} not exists`)
           continue
         }
+        console.log(`${componentName}`, componentOptions)
         let component = new Component(componentOptions)
         entity.addComponent(component)
       }

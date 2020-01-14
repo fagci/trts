@@ -44,7 +44,7 @@
       "capacity": 100,
       "type": "FUEL"
     },
-    "Moving": {"velocity": {"x":0.2}},
+    "Moving": {"velocity": {"x":0.2, "y":0 }},
     "Solid": {},
     "Health": {"max": 500}
   },

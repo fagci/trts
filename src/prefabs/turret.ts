@@ -5,7 +5,7 @@ export class Turret extends Phaser.Physics.Arcade.Sprite {
     let Position: Position, RenderObject: RenderObject
     ({Position, RenderObject} = entity.components)
     super(scene, Position.x, Position.y, 'swss', RenderObject.texture)
-    console.log(RenderObject.texture)
     scene.add.existing(this)
+    this.setDepth(2)
   }
 }

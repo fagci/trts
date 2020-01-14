@@ -14,19 +14,19 @@
         "components": {"Position": {"x": 3904, "y": 4096}}
       },
       {
-        "type": "ER",
+        "type": "EnergyTransponder",
         "components": {"Position": {"x": 3968, "y": 4096}}
       },
       {
-        "type": "ER",
+        "type": "EnergyTransponder",
         "components": {"Position": {"x": 4096, "y": 4096}}
       },
       {
-        "type": "ER",
+        "type": "EnergyTransponder",
         "components": {"Position": {"x": 4160, "y": 4032}}
       },
       {
-        "type": "ER",
+        "type": "EnergyTransponder",
         "components": {"Position": {"x": 4160, "y": 4160}}
       },
       {

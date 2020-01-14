@@ -11,6 +11,6 @@ export class Turret extends Phaser.Physics.Arcade.Sprite {
 
     let turretEntity = Slots.items[0] //just only one turret for now
 
-    MapManager.makePrefabForEntity(scene, turretEntity)
+    // MapManager.makePrefabForEntity(scene, turretEntity)
   }
 }

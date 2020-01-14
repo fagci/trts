@@ -108,17 +108,21 @@ export default class MapManager {
   }
 
   private postProcessEntityComponents(entity: Entity) {
+    console.log(`Postprocess ${entity.dataset.name}`)
     let RenderObject: RenderObject, Slots: Slots
     ({RenderObject, Slots} = entity.components)
+
+    if (RenderObject) {
+      MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
+    }
     if (Slots) {
       for (let slotEntityName of Slots.places) {
+        console.log(`Create slot entity ${slotEntityName}`)
         let slotEntity = this.createEntityWithComponents(slotEntityName, entity)
         Slots.items.push(slotEntity)
       }
     }
-    if (RenderObject) {
-      MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
-    }
+    
     return entity
   }
 

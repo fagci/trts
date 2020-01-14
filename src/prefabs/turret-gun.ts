@@ -11,9 +11,8 @@ export class TurretGun extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this)
     this.setDepth(2)
 
-    console.log(parent)
     this.parentObject = parent.components.RenderObject.gameObject
-
+    console.log(parent.components.RenderObject)
   }
 
   update() {

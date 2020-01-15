@@ -9,7 +9,6 @@ export default class EnergySystem extends System {
   update(time: number, delta: number) {
     let energy1: Energy, energy2: Energy, pos1: Position, pos2: Position
     let distance: number
-    let ds = Phaser.Math.GetSpeed(1, 1)
 
     for (const entity1 of this.group) { // TODO: only sources
       energy1 = entity1.components.Energy

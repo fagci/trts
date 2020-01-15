@@ -8,7 +8,6 @@ export default class MovingSystem extends System {
   ]
 
   update(time: number, delta: number) {
-    let d = 1 // TODO: calculate delta for movement
     for (const entity of this.group) {
       let Position: Components.Position, Moving: Components.Moving
       ({Position, Moving} = entity.components)

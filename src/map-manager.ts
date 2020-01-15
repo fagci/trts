@@ -51,7 +51,7 @@ export default class MapManager {
     let entityDefComponents = this.entities[entityName]
     let mergedComponents = Phaser.Utils.Objects.Merge(entityMapComponents || {}, entityDefComponents)
     let entity = EntityManager.create(entityName)
-    
+
     parent.appendChild(entity)
 
     for (let componentName in mergedComponents) {
@@ -104,7 +104,7 @@ export default class MapManager {
   }
 
   update(time: number, delta: number) {
-    System.update(time, delta)
+    System.update(time, delta / 1000.0)
   }
 
   private postProcessEntityComponents(entity: Entity) {

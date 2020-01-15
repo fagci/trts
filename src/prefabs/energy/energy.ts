@@ -8,7 +8,7 @@ export abstract class EnergyPrefab extends BasePrefab {
   energy: C.Energy
   connections: Phaser.GameObjects.Graphics
 
-  constructor(scene: Phaser.Scene, entity: Entity) {
+  protected constructor(scene: Phaser.Scene, entity: Entity) {
     let Energy: C.Energy
     ({ Energy } = entity.components)
     super(scene, entity)
@@ -25,6 +25,7 @@ export abstract class EnergyPrefab extends BasePrefab {
       .setOrigin(0.5, 0)
       .setStroke('#000', 3)
       .setDepth(this.depth)
+      .setLineSpacing(-4)
   }
 
   update() {
@@ -33,7 +34,7 @@ export abstract class EnergyPrefab extends BasePrefab {
     const connectionIds = Object.keys(connections)
 
     this.energyCapacityText
-      .setPosition(this.x, this.y + this.height)
+      .setPosition(this.x, this.y + this.height / 2)
       .setText([
         `${this.energy.capacity.toFixed(0)}/${this.energy.totalCapacity.toFixed(0)}`,
         `${connectionIds}`

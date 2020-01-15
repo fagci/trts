@@ -1,5 +1,5 @@
-import {Position, RenderObject, Slots} from '../components/components'
-import MapManager from '../map-manager'
+import {Position, RenderObject, Slots} from '../../components/components'
+import MapManager from '../../map-manager'
 
 export class Turret extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, entity) {

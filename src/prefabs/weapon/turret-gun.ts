@@ -1,4 +1,4 @@
-import {RenderObject} from '../components/components'
+import {RenderObject} from '../../components/components'
 import Sprite = Phaser.GameObjects.Sprite
 
 export class TurretGun extends Phaser.Physics.Arcade.Sprite {

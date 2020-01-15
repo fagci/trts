@@ -6,7 +6,7 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
   entityIdText: Phaser.GameObjects.Text
   position: C.Position
 
-  constructor(scene: Phaser.Scene, entity: Entity) {
+  protected constructor(scene: Phaser.Scene, entity: Entity) {
     let Position: C.Position, RenderObject: C.RenderObject
     ({ Position, RenderObject } = entity.components)
     super(scene, Position.x, Position.y, 'swss', RenderObject.texture)
@@ -30,6 +30,6 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     this.setPosition(this.position.x, this.position.y)
-    this.entityIdText.setPosition(this.x, this.y)
+    this.entityIdText.setPosition(this.x, this.y - this.height / 2)
   }
 }

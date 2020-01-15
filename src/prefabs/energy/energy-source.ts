@@ -1,19 +1,17 @@
 import * as C from '../../components/components'
 import Entity from '../../ecs/entity'
-import BasePrefab from '../base-prefab'
-import { EnergyPrefab } from './energy'
+import {EnergyPrefab} from './energy'
 
 export abstract class EnergySource extends EnergyPrefab {
   energyRange: Phaser.GameObjects.Graphics
- 
+
   constructor(scene: Phaser.Scene, entity: Entity) {
-    let Energy: C.Energy
-    ({ Energy } = entity.components)
+    let energyComponent: C.Energy = entity.components.Energy
     super(scene, entity)
- 
+
     this.energyRange = scene.add.graphics()
       .fillStyle(0x2244ff)
-      .fillCircle(0, 0, Energy.range)
+      .fillCircle(0, 0, energyComponent.range)
       .setDepth(0)
   }
 

@@ -14,7 +14,7 @@
     "Team": {
       "team": "BETA"
     },
-    "Solid": {},
+    "Solid": {}
   },
   "TurretGun": {
     "RenderObject": {
@@ -56,11 +56,9 @@
     "Energy": {
       "totalCapacity": 10,
       "capacity": 0,
-      "range": 64
+      "range": 128
     },
-    "EnergyTransponder": {
-      
-    },
+    "EnergyTransponder": {},
     "Solid": {},
     "Health": {"max": 200}
   },

@@ -9,6 +9,7 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
   protected constructor(scene: Phaser.Scene, entity: Entity) {
     let Position: C.Position, RenderObject: C.RenderObject
     ({ Position, RenderObject } = entity.components)
+    Position = Position || new Phaser.Geom.Point()
     super(scene, Position.x, Position.y, 'swss', RenderObject.texture)
     scene.add.existing(this)
     if(RenderObject.animation) {

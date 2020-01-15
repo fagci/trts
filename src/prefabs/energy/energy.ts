@@ -15,7 +15,6 @@ export abstract class EnergyPrefab extends BasePrefab {
     this.energy = Energy
 
     this.connections = scene.add.graphics()
-      .lineStyle(3, 0xff0000)
       .setDepth(1)
 
     this.energyCapacityText = scene.add.text(this.x, this.y, '---', {
@@ -45,7 +44,10 @@ export abstract class EnergyPrefab extends BasePrefab {
     if (connectionIds.length !== 0) {
       for (let entity of Object.values(connections)) {
         let p = entity.components.Position
-        this.connections.moveTo(0, 0).lineTo(p.x - this.x, p.y - this.y)
+        this.connections
+        .lineGradientStyle(5,0xff0000,0x0000ff,0xff0000,0x0000ff)
+        .moveTo(0, 0)
+        .lineTo(p.x - this.x, p.y - this.y)
       }
       this.connections.stroke()
     }

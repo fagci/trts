@@ -97,6 +97,7 @@ export class Energy {
   totalCapacity: number = 100
   capacity: number = 0
   range: number = 64
+  current: number = 1
   connections: {[name: string]: Entity} = {}
 
   constructor(options: { totalCapacity?: number, capacity?: number }) {
@@ -114,9 +115,7 @@ export class EnergyGenerator {
 }
 
 export class EnergyTransponder {
-  source: Entity
   range: number = 128
-  current: number = 3
 
   constructor(options: any) {
     if (options) Object.assign(this, options)
@@ -124,9 +123,7 @@ export class EnergyTransponder {
 }
 
 export class EnergyConsumer {
-  source: Entity
-  load: number = 1
-
+  load: number = 1.5
   constructor(options: any) {
     if (options) Object.assign(this, options)
   }

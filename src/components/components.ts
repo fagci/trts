@@ -111,7 +111,6 @@ export class Energy {
 
 export class EnergyGenerator {
   powerSource: any = PowerSource.THERMAL
-  range: number = 64
 
   constructor(options: any) {
     if (options.type) this.powerSource = PowerSource[options.type]
@@ -127,7 +126,7 @@ export class EnergyTransponder {
 }
 
 export class EnergyConsumer {
-  load: number = 1.5
+  load: number = 100
 
   constructor(options: any) {
     if (options) Object.assign(this, options)

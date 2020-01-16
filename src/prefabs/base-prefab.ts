@@ -20,7 +20,7 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
 
     this.setDepth(2)
 
-    this.entityIdText = scene.add.text(this.x, this.y, `${entity.id} (${entity.dataset.name})`, {
+    this.entityIdText = scene.add.text(this.x, this.y, `${entity.id} (${entity.dataset.name.replace(/[^A-Z0-9]/g,'')})`, {
       color: '#fff',
       font: '10px monospace'
     })

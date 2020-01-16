@@ -16,6 +16,7 @@ export default class BootScene extends Phaser.Scene {
       .atlas('swss', require('../../assets/gfx/swss.png'), require('../../assets/gfx/swss.json'))
       .json('entities', require('../../assets/entities/entities.json'))
       .json('maps', require('../../assets/maps/maps.json'))
+      .image('smoke', require('../../assets/gfx/smoke-sprite.png'))
   }
 
   create() {

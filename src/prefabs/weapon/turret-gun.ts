@@ -14,5 +14,6 @@ export class TurretGun extends BasePrefab {
     super.update()
     const { x, y } = this.parentObject
     this.setPosition(x, y)
+    this.entityIdText.setPosition(x, y)
   }
 }

@@ -77,6 +77,8 @@ export default class EnergySystem extends System {
     let taken = Phaser.Math.Clamp(dstConsumeCurrent, 0, sourceEnergy.capacity)
     sourceEnergy.capacity -= taken
     dstEnergy.capacity += taken
+    dstEnergy.capacity = Phaser.Math.Clamp(dstEnergy.capacity, 0, dstEnergy.totalCapacity)
+
 
     if(dst.hasAttribute(C.EnergyConsumer.name)) {
       if(dstEnergy.capacity>= dst.components.EnergyConsumer.load) {

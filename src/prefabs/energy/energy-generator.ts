@@ -1,15 +1,22 @@
 import {EnergySource} from './energy-source'
+import { BlendModes } from 'phaser'
 
 export class EnergyGenerator extends EnergySource {
-    emitter: any;
+    emitter: Phaser.GameObjects.Particles.ParticleEmitter
   constructor(scene, entity) {
     super(scene, entity)
-    let particles = scene.add.particles('spark').setDepth(3);
+    let particles = scene.add.particles('smoke').setDepth(3);
 
     this.emitter = particles.createEmitter();
-    this.emitter.setPosition(this.x, this.y);
-    this.emitter.setSpeed(20);
-    this.emitter.setBlendMode(Phaser.BlendModes.ADD);
+    this.emitter
+      .setPosition(this.x, this.y)
+      .setSpeed(30)
+      .setScale(0.1)
+      .setAlpha(0.3)
+      .setBlendMode(BlendModes.DARKEN)
+    this.emitter.onParticleEmit((particle) => {
+      particle.rotation = Math.PI*2*Math.random()
+    })
   }
 
   update() {

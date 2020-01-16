@@ -13,13 +13,13 @@ const config: Phaser.Types.Core.GameConfig = {
     UIScene,
   ],
   plugins: {
-    scene: [
-      {
-        key: 'DebugDrawPlugin',
-        plugin: DebugDrawPlugin,
-        mapping: 'debugDraw'
-      }
-    ]
+    // scene: [
+    //   {
+    //     key: 'DebugDrawPlugin',
+    //     plugin: DebugDrawPlugin,
+    //     mapping: 'debugDraw'
+    //   }
+    // ]
   },
   banner: false,
   pixelArt: true,

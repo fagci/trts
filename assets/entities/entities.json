@@ -56,7 +56,7 @@
     "Energy": {
       "totalCapacity": 10,
       "capacity": 0,
-      "range": 128
+      "range": 256
     },
     "EnergyTransponder": {},
     "Solid": {},

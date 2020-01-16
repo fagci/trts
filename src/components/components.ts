@@ -28,10 +28,14 @@ export class Health {
 }
 
 export class Position extends Phaser.Geom.Point {
-
-  constructor(options?: {}) {
+  constructor(options?: {
+    tx: number // tile-based position
+    ty: number
+  }) {
     super()
     if (options) Object.assign(this, options)
+    if (options.tx) this.x = options.tx * 16
+    if (options.ty) this.y = options.ty * 16
   }
 }
 
@@ -98,7 +102,7 @@ export class Energy {
   capacity: number = 0
   range: number = 64
   current: number = 1
-  connections: {[name: string]: Entity} = {}
+  connections: { [name: string]: Entity } = {}
 
   constructor(options: { totalCapacity?: number, capacity?: number }) {
     if (options) Object.assign(this, options)
@@ -124,6 +128,7 @@ export class EnergyTransponder {
 
 export class EnergyConsumer {
   load: number = 1.5
+
   constructor(options: any) {
     if (options) Object.assign(this, options)
   }

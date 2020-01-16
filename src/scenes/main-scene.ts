@@ -30,12 +30,10 @@ export default class MainScene extends Phaser.Scene {
 
     this.cameras.main.setRoundPixels(true)
 
-    // this.followPoint = new Phaser.Math.Vector2(
-    //   this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
-    //   this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
-    // )
-
-    this.followPoint = new Phaser.Math.Vector2(4096, 4096)
+    this.followPoint = new Phaser.Math.Vector2(
+      this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
+      this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
+    )
 
     this.input.on('wheel', e => this.changeZoom(-e.deltaY / 1000))
 

@@ -3,35 +3,35 @@
     "entities": [
       {
         "type": "Turret",
-        "components": {"Position": {"x": 4096, "y": 4160}, "Team": {"value": "Alpha"}}
+        "components": {"Position": {"tx": -8, "ty":  -4}, "Team": {"value": "Alpha"}}
       },
       {
         "type": "Turret",
-        "components": {"Position": {"x": 4032, "y": 4032}, "Team": {"value": "Beta"}}
+        "components": {"Position": {"tx": 8, "ty":  -4}, "Team": {"value": "Beta"}}
+      },
+      {
+        "type": "EnergyTransponder",
+        "components": {"Position": {"tx": 16, "ty":  4}}
       },
       {
         "type": "EnergyGenerator",
-        "components": {"Position": {"x": 3904, "y": 4128}}
+        "components": {"Position": {"tx": -8, "ty":  8}}
       },
       {
         "type": "EnergyTransponder",
-        "components": {"Position": {"x": 3968, "y": 4096}}
+        "components": {"Position": {"tx": 0, "ty":  8}}
       },
       {
         "type": "EnergyTransponder",
-        "components": {"Position": {"x": 4096, "y": 4096}}
+        "components": {"Position": {"tx": 8, "ty":  2}}
       },
       {
         "type": "EnergyTransponder",
-        "components": {"Position": {"x": 4160, "y": 4032}}
-      },
-      {
-        "type": "EnergyTransponder",
-        "components": {"Position": {"x": 4160, "y": 4160}}
+        "components": {"Position": {"tx": 24, "ty":  6}}
       },
       {
         "type": "EnergyConsumer",
-        "components": {"Position": {"x": 4160, "y": 4096}}
+        "components": {"Position": {"tx": -6, "ty":  6}}
       }
     ]
   }

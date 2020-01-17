@@ -14,8 +14,8 @@ export default class EnergySystem extends System {
     for (const entity1 of this.group) { // TODO: only sources
       energy1 = entity1.components.Energy
       pos1 = entity1.components.Position
-      
-      this.generateEnergy(entity1, energy1, delta)
+
+      EnergySystem.generateEnergy(entity1, energy1, delta)
 
       if(!entity1.hasAttribute(C.EnergyGenerator.name) && !entity1.hasAttribute(C.EnergyTransponder.name)) {
         continue
@@ -50,20 +50,20 @@ export default class EnergySystem extends System {
       for (const source in connections) {
         if (connections.hasOwnProperty(source)) {
           const connection: Entity = connections[source]
-          this.consumeEnergy(connection, energyConsumer)
+          EnergySystem.consumeEnergy(connection, energyConsumer)
         }
       }
     }
   }
 
-  private generateEnergy(entity1: Entity, energy1: C.Energy, delta: number) {
+  private static generateEnergy(entity1: Entity, energy1: C.Energy, delta: number) {
     if (entity1.hasAttribute(C.EnergyGenerator.name) && energy1.capacity < energy1.totalCapacity) {
       energy1.capacity += entity1.components.EnergyGenerator.powerSource.current * delta
       energy1.capacity = Phaser.Math.Clamp(energy1.capacity, 0, energy1.totalCapacity)
     }
   }
 
-  private consumeEnergy(source: Entity, dst: Entity) {
+  private static consumeEnergy(source: Entity, dst: Entity) {
     let sourceEnergy: C.Energy = source.components.Energy 
     let dstEnergy: C.Energy = dst.components.Energy 
     let dstConsumeCurrent: number = 0

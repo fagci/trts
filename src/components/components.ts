@@ -98,10 +98,10 @@ const PowerSource = {
 }
 
 export class Energy {
-  totalCapacity: number = 100
-  capacity: number = 0
-  range: number = 64
   current: number = 1
+  capacity: number = 0
+  totalCapacity: number = 100
+  range: number = 64
   connections: { [name: string]: Entity } = {}
 
   constructor(options: { totalCapacity?: number, capacity?: number }) {

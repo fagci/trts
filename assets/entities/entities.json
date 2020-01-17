@@ -71,7 +71,7 @@
       "capacity": 0
     },
     "EnergyConsumer": {
-      "usage": 10
+      "usage": 5
     },
     "Solid": {},
     "Health": {"max": 500}

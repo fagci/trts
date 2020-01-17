@@ -1,55 +1,65 @@
 import System from '../ecs/system'
-import * as C from '../components/components'
 import Entity from '../ecs/entity'
+import * as C from '../components/components'
+
+const distanceBetween = Phaser.Math.Distance.Between
 
 export default class EnergySystem extends System {
   deps = [
     C.Energy.name,
   ]
 
+  static filterSource(entity: Entity) {
+    return entity.hasAttribute(C.EnergyGenerator.name) 
+      || entity.hasAttribute(C.EnergyTransponder.name)
+  }
+
+  static filterSink(entity: Entity) {
+    return entity.hasAttribute(C.EnergyConsumer.name) 
+      || entity.hasAttribute(C.EnergyTransponder.name)
+  }
+
   update(time: number, delta: number) {
     let energy1: C.Energy, energy2: C.Energy, pos1: C.Position, pos2: C.Position
-    let distance: number
 
-    for (const entity1 of this.group) { // TODO: only sources
+    for (const entity1 of this.group) { // sources
+      if (!EnergySystem.filterSource(entity1)) continue
+
       ({Energy: energy1, Position: pos1} = entity1.components)
 
       EnergySystem.generateEnergy(entity1, energy1, delta)
 
-      if (!entity1.hasAttribute(C.EnergyGenerator.name) && !entity1.hasAttribute(C.EnergyTransponder.name)) {
-        continue
-      }
-
-
-      for (const entity2 of this.group) {
+      for (const entity2 of this.group) { // sinks
         if (entity1 === entity2) continue
+        if(!EnergySystem.filterSink(entity2)) continue
+
+        // TODO: pass transponder if it already exists in links
+        // also, I think, Transponder will behave as layer
         ({Energy: energy2, Position: pos2} = entity2.components)
 
-        distance = Phaser.Math.Distance.Between(pos1.x, pos1.y, pos2.x, pos2.y)
-
-        if (distance > energy2.range) {
-          delete energy1.connections[entity2.id] // disconnect
+        if (distanceBetween(pos1.x, pos1.y, pos2.x, pos2.y) > energy1.range) {
+          energy1.removeConnection(entity2) // disconnect
         } else {
-          energy1.connections[entity2.id] = entity2 // connect source to sinks
+          energy1.addConnection(entity2) // connect source to sinks
         }
       }
     }
 
-    for (const energySource of this.group) {
-      if (!energySource.hasAttribute(C.EnergyGenerator.name) && !energySource.hasAttribute(C.EnergyTransponder.name)) {
-        continue
-      }
+    // for (const energySource of this.group) {
+    //   if (!EnergySystem.filterSource(energySource)) {
+    //     continue
+    //   }
 
-      const consumersEnergy: C.Energy = energySource.components.Energy
-      let connections = consumersEnergy.connections
+    //   const consumersEnergy: C.Energy = energySource.components.Energy
+    //   let connections = consumersEnergy.connections
 
-      for (const sink in connections) {
-        if (connections.hasOwnProperty(sink)) {
-          const connection: Entity = connections[sink]
-          EnergySystem.consumeEnergy(energySource, connection)
-        }
-      }
-    }
+    //   for (const sink in connections) {
+    //     if (connections.hasOwnProperty(sink)) {
+    //       const connection: Entity = connections[sink]
+    //       EnergySystem.consumeEnergy(energySource, connection)
+    //     }
+    //   }
+    // }
   }
 
   private static generateEnergy(entity1: Entity, energy1: C.Energy, delta: number) {

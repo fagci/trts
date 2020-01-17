@@ -126,7 +126,7 @@ export class EnergyTransponder {
 }
 
 export class EnergyConsumer {
-  load: number = 100
+  usage: number = 100
 
   constructor(options: any) {
     if (options) Object.assign(this, options)

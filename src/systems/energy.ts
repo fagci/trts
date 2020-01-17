@@ -64,14 +64,14 @@ export default class EnergySystem extends System {
   }
 
   private static consumeEnergy(source: Entity, dst: Entity) {
-    let sourceEnergy: C.Energy = source.components.Energy 
-    let dstEnergy: C.Energy = dst.components.Energy 
+    let sourceEnergy: C.Energy = source.components.Energy
+    let dstEnergy: C.Energy = dst.components.Energy
     let dstConsumeCurrent: number = 0
     if(dst.hasAttribute(C.EnergyTransponder.name)) {
       dstConsumeCurrent = dst.components.Energy.current
     }
     if(dst.hasAttribute(C.EnergyConsumer.name)) {
-      dstConsumeCurrent = dst.components.EnergyConsumer.load
+      dstConsumeCurrent = dst.components.EnergyConsumer.usage
     }
 
     let taken = Phaser.Math.Clamp(dstConsumeCurrent, 0, sourceEnergy.capacity)
@@ -81,8 +81,8 @@ export default class EnergySystem extends System {
 
 
     if(dst.hasAttribute(C.EnergyConsumer.name)) {
-      if(dstEnergy.capacity>= dst.components.EnergyConsumer.load) {
-        dstEnergy.capacity -= dst.components.EnergyConsumer.load
+      if(dstEnergy.capacity>= dst.components.EnergyConsumer.usage) {
+        dstEnergy.capacity -= dst.components.EnergyConsumer.usage
       }
     }
   }

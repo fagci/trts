@@ -80,7 +80,7 @@ export class Energy {
   capacity: number = 0
   totalCapacity: number = 100
   range: number = 64
-  connections: { [name: string]: Entity } = {}
+  connections: { [name: string]: Entity } = {} // this = source, connections to sinks because of transmit range
 }
 
 export class EnergyGenerator {

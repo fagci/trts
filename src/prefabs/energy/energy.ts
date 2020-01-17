@@ -45,10 +45,10 @@ export abstract class EnergyPrefab extends BasePrefab {
       for (let entity of Object.values(connections)) {
         let p = entity.components.Position
         this.connections
-        .lineStyle(10,0xee8822)
-        .moveTo(0, 0)
-        .lineStyle(0,0xee8822)
-        .lineTo(p.x - this.x, p.y - this.y)
+          .lineStyle(10,0xee8822)
+          .moveTo(0, 0)
+          .lineStyle(0,0xee8822)
+          .lineTo(p.x - this.x, p.y - this.y)
       }
       this.connections.stroke()
     }

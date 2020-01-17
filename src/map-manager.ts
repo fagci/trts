@@ -20,7 +20,6 @@ export default class MapManager {
   interfaceLayer: Phaser.GameObjects.Group
 
   chunks = {}
-  chunkRadiusToLoad = 3
 
   entities: any
   maps: any
@@ -62,7 +61,9 @@ export default class MapManager {
         console.warn(`Component ${componentName} not exists`)
         continue
       }
-      let component = new Component(componentOptions)
+      let component = new Component()
+      Object.assign(component, componentOptions)
+      component.init && component.init(componentOptions)
       entity.addComponent(component)
     }
 
@@ -103,7 +104,7 @@ export default class MapManager {
     }
   }
 
-  update(time: number, delta: number) {
+  static update(time: number, delta: number) {
     System.update(time, delta / 1000.0)
   }
 

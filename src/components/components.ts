@@ -4,21 +4,14 @@ export class RenderObject {
   texture: string
   animation: string
   gameObject: Phaser.GameObjects.GameObject
-
-  constructor(options?: object) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Health {
   max: number = 100
   value: number = 100
 
-  constructor(options: { max?: number, health?: number }) {
-    if (options) {
-      Object.assign(this, options)
-      if (options.health === undefined) this.value = this.max
-    }
+  init() {
+    if (this.value === undefined) this.value = this.max
   }
 
   take(damage: Damage) {
@@ -28,14 +21,12 @@ export class Health {
 }
 
 export class Position extends Phaser.Geom.Point {
-  constructor(options?: {
-    tx: number // tile-based position
-    ty: number
-  }) {
-    super()
-    if (options) Object.assign(this, options)
-    if (options.tx) this.x = options.tx * 16
-    if (options.ty) this.y = options.ty * 16
+  private tx: number
+  private ty: number
+
+  init() {
+    if (this.tx) this.x = this.tx * 16
+    if (this.ty) this.y = this.ty * 16
   }
 }
 
@@ -43,19 +34,11 @@ export class Damage {
   value: number
   from: Entity
   to: Entity
-
-  constructor(options?: { from: Entity; to: Entity; value: number }) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class DamageSource {
   value: number
   from: Entity
-
-  constructor(options?: { from: Entity; value: number }) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Moving {
@@ -64,10 +47,6 @@ export class Moving {
   velocity: Phaser.Geom.Point = new Phaser.Geom.Point(0, 0)
   direction: number = 0
   maxVelocity: number = 12 // TODO: needed?
-
-  constructor(options?: {}) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Destroy {
@@ -84,9 +63,8 @@ export class Dissolve {
   value: number
   max: any
 
-  constructor(options?: { value?: number, max: number }) {
-    if (options) Object.assign(this, options)
-    if (options.value === undefined) this.value = this.max
+  init() {
+    if (this.value === undefined) this.value = this.max
   }
 }
 
@@ -103,51 +81,32 @@ export class Energy {
   totalCapacity: number = 100
   range: number = 64
   connections: { [name: string]: Entity } = {}
-
-  constructor(options: { totalCapacity?: number, capacity?: number }) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class EnergyGenerator {
+  type: string
   powerSource: any = PowerSource.THERMAL
 
-  constructor(options: any) {
-    if (options.type) this.powerSource = PowerSource[options.type]
+  init() {
+    if (this.type) this.powerSource = PowerSource[this.type]
   }
 }
 
 export class EnergyTransponder {
   range: number = 128
-
-  constructor(options: any) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class EnergyConsumer {
   usage: number = 100
-
-  constructor(options: any) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Slots {
   items: Array<Entity> = []
   places: Array<string> = []
-
-  constructor(options: { items: [] }) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Team {
   value: string
-
-  constructor(options: { value: string }) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 const Weapons = {
@@ -172,8 +131,7 @@ export class Weapon {
   fireDelay: number
   spreadAngle: number
 
-  constructor(options: {}) {
-    if (options) Object.assign(this, options)
+  init() {
     this.capacity = this.initialCapacity || 0
   }
 }
@@ -182,32 +140,17 @@ export class Armed {
   type: string = 'NONE'
   weapon: Weapon
 
-  constructor(options: {}) {
-    if (options) Object.assign(this, options)
-    this.weapon = new Weapon(Weapons[this.type])
+  init() {
+    this.weapon = new Weapon()
+    Object.assign(this.weapon, Weapons[this.type])
   }
 }
 
 export class LifeTime {
   value: number = 10000
-
-  constructor(options: {}) {
-    if (options) Object.assign(this, options)
-  }
-}
-
-export class Factory {
-
-  constructor(options: {}) {
-    if (options) Object.assign(this, options)
-  }
 }
 
 export class Selectable {
   selected: boolean = false
   color: number = 0xff0000
-
-  constructor(options: {}) {
-    if (options) Object.assign(this, options)
-  }
 }

@@ -51,7 +51,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    this.mapManager.update(time, delta)
+    MapManager.update(time, delta)
 
     if (this.game.input.activePointer.isDown) {
       if (this.dragPoint) {

@@ -10,25 +10,15 @@ export default class Chunk {
   x: number
   y: number
   isLoaded: boolean
-  tileMap: Phaser.Tilemaps.Tilemap
+  tileSet: Phaser.Tilemaps.Tileset
   mapLayer: Phaser.Tilemaps.StaticTilemapLayer
   mapLayerWater: Phaser.Tilemaps.StaticTilemapLayer
-  tileSet: Phaser.Tilemaps.Tileset
 
   constructor(scene, x, y) {
     this.scene = scene
     if (!Chunk.noise) Chunk.noise = scene.noise
     this.x = x
     this.y = y
-
-    this.tileMap = this.scene.make.tilemap({
-      tileWidth: 16,
-      tileHeight: 16,
-      width: 16,
-      height: 16,
-    })
-
-    this.tileSet = this.tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
   }
 
   static getHeight(i: number, j: number) {
@@ -50,7 +40,8 @@ export default class Chunk {
 
   unload() {
     if (!this.isLoaded) return
-    this.tileMap.removeAllLayers()
+    this.mapLayer.destroy()
+    this.mapLayerWater.destroy()
   }
 
   load() {
@@ -83,9 +74,13 @@ export default class Chunk {
 
     const tileMap = this.scene.make.tilemap({data, tileWidth: 16, tileHeight: 16})
     const tileMapWater = this.scene.make.tilemap({data: dataWater, tileWidth: 16, tileHeight: 16})
+    
+    const tileSet = tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
+    const tileSetWater = tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
+    
     // const tileMapWater = this.scene.add.tilemap(null, 16, 16, 16, 16, dataWater, true)
-    this.mapLayer = tileMap.createStaticLayer(0, this.tileSet, this.x << 8, this.y << 8).setDepth(-1)
-    this.mapLayerWater = tileMapWater.createStaticLayer(0, this.tileSet, this.x << 8, this.y << 8).setDepth(-1)
+    this.mapLayer = tileMap.createStaticLayer(0, tileSet, this.x << 8, this.y << 8).setDepth(-1)
+    this.mapLayerWater = tileMapWater.createStaticLayer(0, tileSetWater, this.x << 8, this.y << 8).setDepth(-1)
     return null
   }
 }

@@ -1,9 +1,7 @@
-import { RenderObject } from '../../components/components'
-import Sprite = Phaser.GameObjects.Sprite
 import BasePrefab from '../base-prefab'
 
 export class TurretGun extends BasePrefab {
-  parentObject: Sprite
+  parentObject: Phaser.GameObjects.Sprite
 
   constructor(scene, entity, parent) {
     super(scene, entity)

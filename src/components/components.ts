@@ -72,7 +72,7 @@ const PowerSource = {
   AIR: {current: 0.05},
   THERMAL: {current: 0.01},
   MECHANICAL: {current: 1},
-  FUEL: {current: 3.9},
+  FUEL: {current: 15.9},
 }
 
 export class Energy {
@@ -81,11 +81,23 @@ export class Energy {
   totalCapacity: number = 100
   range: number = 64
   connections: { [name: string]: Entity } = {} // this = source, connections to sinks because of transmit range
+
+  isDirty: boolean = false
+
   addConnection(entity:Entity) {
+    if(this.hasConnection(entity)) return
     this.connections[entity.id] = entity
+    this.isDirty = true
   }
+
   removeConnection(entity:Entity) {
+    if(!this.hasConnection(entity)) return
     delete this.connections[entity.id]
+    this.isDirty = true
+  }
+
+  hasConnection(entity: Entity) {
+    return this.connections[entity.id] !== undefined
   }
 }
 

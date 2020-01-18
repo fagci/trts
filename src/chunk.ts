@@ -1,4 +1,4 @@
-import {Noise} from 'noisejs'
+import { Noise } from 'noisejs'
 import MainScene from './scenes/main-scene'
 
 export default class Chunk {
@@ -11,8 +11,9 @@ export default class Chunk {
   y: number
   isLoaded: boolean
   tileMap: Phaser.Tilemaps.Tilemap
-  mapLayer: Phaser.Tilemaps.DynamicTilemapLayer
-  mapLayerWater: Phaser.Tilemaps.DynamicTilemapLayer
+  mapLayer: Phaser.Tilemaps.StaticTilemapLayer
+  mapLayerWater: Phaser.Tilemaps.StaticTilemapLayer
+  tileSet: Phaser.Tilemaps.Tileset
 
   constructor(scene, x, y) {
     this.scene = scene
@@ -27,10 +28,7 @@ export default class Chunk {
       height: 16,
     })
 
-    const tileSet = this.tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
-
-    this.mapLayer = this.tileMap.createBlankDynamicLayer('mapLayer', tileSet, this.x << 8, this.y << 8).setDepth(-1)
-    this.mapLayerWater = this.tileMap.createBlankDynamicLayer('mapLayerWater', tileSet, this.x << 8, this.y << 8).setDepth(-1)
+    this.tileSet = this.tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
   }
 
   static getHeight(i: number, j: number) {
@@ -63,17 +61,31 @@ export default class Chunk {
     const x2 = (this.x + 1) << Chunk.sizeExp
     const y2 = (this.y + 1) << Chunk.sizeExp
 
-    for (let y = y1; y < y2; y++) {
-      for (let x = x1; x < x2; x++) {
-        let v = Chunk.getHeight(x, y)
-        let b = Chunk.getBiome(v)
-        this.mapLayer.putTileAt(b, x - x1, y - y1)
-        if (v < 0) this.mapLayerWater.putTileAt(326, x - x1, y - y1)
+    let x, y, v, row, rowWater
+    let data: number[][] = []
+    let dataWater: number[][] = []
+
+    for (y = y1; y < y2; y++) {
+      row = []
+      rowWater = []
+      for (x = x1; x < x2; x++) {
+        v = Chunk.getHeight(x, y)
+        row.push(Chunk.getBiome(v))
+
+        if (v < 0) rowWater.push(326)
+        else rowWater.push(null)
       }
+      data.push(row)
+      dataWater.push(rowWater)
     }
 
     this.isLoaded = true
 
+    const tileMap = this.scene.make.tilemap({data, tileWidth: 16, tileHeight: 16})
+    const tileMapWater = this.scene.make.tilemap({data: dataWater, tileWidth: 16, tileHeight: 16})
+    // const tileMapWater = this.scene.add.tilemap(null, 16, 16, 16, 16, dataWater, true)
+    this.mapLayer = tileMap.createStaticLayer(0, this.tileSet, this.x << 8, this.y << 8).setDepth(-1)
+    this.mapLayerWater = tileMapWater.createStaticLayer(0, this.tileSet, this.x << 8, this.y << 8).setDepth(-1)
     return null
   }
 }

@@ -10,7 +10,7 @@ export default class System {
   static update(time: number, delta: number) {
     for (let name in this.systems) {
       let system = this.systems[name]
-      if (EntityManager.hasNewMember || system.group.length == 0) {
+      if (EntityManager.hasNewMember || !system.group || system.group.length == 0) {
         system.group = EntityManager.getEntities(system.deps)
       }
       system.update(time, delta)

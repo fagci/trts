@@ -1,7 +1,7 @@
 import Entity from '../ecs/entity'
 import * as C from '../components/components'
 
-export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
+export default abstract class BasePrefab extends Phaser.GameObjects.Sprite {
   entity: Entity
   entityIdText: Phaser.GameObjects.Text
   position: C.Position

@@ -68,7 +68,8 @@
     },
     "Energy": {
       "totalCapacity": 10,
-      "capacity": 0
+      "capacity": 0,
+      "current": 0.01
     },
     "EnergyConsumer": {
       "usage": 5

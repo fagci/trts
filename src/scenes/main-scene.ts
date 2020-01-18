@@ -75,7 +75,6 @@ export default class MainScene extends Phaser.Scene {
     if (this.zoomKeys.Z.isDown) this.changeZoom(0.01)
     if (this.zoomKeys.X.isDown) this.changeZoom(-0.01)
 
-    this.mapManager.onCameraUpdate() // TODO: move to camera movement instead (first movement ignored =\)
   }
 
   addPosition(dx, dy) {
@@ -88,6 +87,8 @@ export default class MainScene extends Phaser.Scene {
     this.cameraZoom = Phaser.Math.Clamp(this.cameraZoom, 0.5, 4)
     this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y)
     this.cameras.main.zoom = this.cameraZoom
+    this.mapManager.onCameraUpdate() // TODO: move to camera movement instead (first movement ignored =\)
+
   }
 
   changeZoom(delta) {

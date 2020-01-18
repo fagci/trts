@@ -39,21 +39,23 @@ export abstract class EnergyPrefab extends BasePrefab {
         `${connectionIds}`
       ])
 
-    this.connections.setPosition(this.x, this.y)
-    this.connections.clear()
-    if (connectionIds.length !== 0) {
-      for (let entity of Object.values(connections)) {
-        let p = entity.components.Position
-        this.connections
-          .lineStyle(10,0xee8822)
-          .moveTo(0, 0)
-          .lineStyle(0,0xee8822)
-          .lineTo(p.x - this.x, p.y - this.y)
+    if(this.energy.isDirty) {
+      this.connections
+        .setPosition(this.x, this.y)
+        .clear()
+      if (connectionIds.length !== 0) {
+        for (let entity of Object.values(connections)) {
+          let p = entity.components.Position
+          this.connections
+            .lineStyle(3, 0xaaddee)
+            .moveTo(0, 0)
+            .lineTo(p.x - this.x, p.y - this.y)
+        }
+        this.connections.strokePath()
       }
-      this.connections.stroke()
+      this.energy.isDirty = false
     }
-
-    if(this.entity.hasAttribute(C.Moving.name)) {
+    if (this.entity.components.Moving !== undefined) {
       this.energyCapacityText.setDepth(this.depth)
     }
   }

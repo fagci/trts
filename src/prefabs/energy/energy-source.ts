@@ -12,7 +12,7 @@ export abstract class EnergySource extends EnergyPrefab {
     this.energyRange = scene.add.graphics()
       .fillStyle(0x222222, 0.24)
       .fillCircle(0, 0, energyComponent.range)
-      .strokeCircle(0, 0, energyComponent.range)
+      // .strokeCircle(0, 0, energyComponent.range)
       .setDepth(0)
   }
 

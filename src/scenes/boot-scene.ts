@@ -10,7 +10,7 @@ export default class BootScene extends Phaser.Scene {
     super('BootScene')
   }
 
-  loadResources() {
+  private loadResources() {
     this.load
       .image('mc', require('../../assets/gfx/mc.png'))
       .atlas('swss', require('../../assets/gfx/swss.png'), require('../../assets/gfx/swss.json'))
@@ -37,7 +37,9 @@ export default class BootScene extends Phaser.Scene {
       key: 'generator',
       frameRate: 12,
       repeat: -1,
-      frames: this.anims.generateFrameNames('swss', {frames: ['base_1', 'base_2', 'base_3', 'base_4']}),
+      frames: this.anims.generateFrameNames('swss', {
+        frames: ['base_1', 'base_2', 'base_3', 'base_4']
+      }),
     })
 
     this.scene.start('MainScene')
@@ -51,11 +53,16 @@ export default class BootScene extends Phaser.Scene {
     this.loadResources()
   }
 
+  shutdown() {
+    this.progress.destroy()
+    this.text.destroy()
+  }
+
   private onLoadStart() {
     this.text.setText('Loading...')
   }
 
-  private onLoadProgress(value) {
+  private onLoadProgress(value: number) {
     this.text.setText(`Loading... ${(value * 100).toFixed(0)}%`)
     this.progressFgRect.width = (this.cameras.main.width - 64) * value
     this.progress
@@ -67,7 +74,6 @@ export default class BootScene extends Phaser.Scene {
   }
 
   private onLoadComplete() {
-    this.progress.destroy()
-    this.text.destroy()
+    this.text.setText('Load complete')
   }
 }

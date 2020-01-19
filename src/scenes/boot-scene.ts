@@ -19,6 +19,19 @@ export default class BootScene extends Phaser.Scene {
       .image('smoke', require('../../assets/gfx/smoke-sprite.png'))
   }
 
+  init() {
+    const mainCamera = this.cameras.main
+    const SH: number = mainCamera.height
+    const SW: number = mainCamera.width
+
+    this.progress = this.add.graphics()
+    this.progressBgRect = new Geom.Rectangle(32, SH / 2, SW - 64, 16)
+    Geom.Rectangle.CenterOn(this.progressBgRect, 0.5 * SW, 0.5 * SH)
+    this.progressFgRect = Geom.Rectangle.Clone(this.progressBgRect)
+
+    this.text = this.add.text(32, SH / 2 - 32, '', {color: '#246', smoothed: false})
+  }
+
   create() {
     this.anims.create({
       key: 'generator',
@@ -39,20 +52,11 @@ export default class BootScene extends Phaser.Scene {
   }
 
   private onLoadStart() {
-    const mainCamera = this.cameras.main
-    const SH: number = mainCamera.height
-    const SW: number = mainCamera.width
-
-    this.progress = this.add.graphics()
-    this.progressBgRect = new Geom.Rectangle(32, SH / 2, SW - 64, 16)
-    Geom.Rectangle.CenterOn(this.progressBgRect, 0.5 * SW, 0.5 * SH)
-    this.progressFgRect = Geom.Rectangle.Clone(this.progressBgRect)
-
-    this.text = this.add.text(32, SH / 2 - 32, 'Loading...', {color: '#246', smoothed: false})
+    this.text.setText('Loading...')
   }
 
   private onLoadProgress(value) {
-    this.text.text = `Loading... ${(value * 100).toFixed(0)}%`
+    this.text.setText(`Loading... ${(value * 100).toFixed(0)}%`)
     this.progressFgRect.width = (this.cameras.main.width - 64) * value
     this.progress
       .clear()

@@ -1,7 +1,7 @@
 import Entity from '../ecs/entity'
 import * as C from '../components/components'
 
-export default abstract class BasePrefab extends Phaser.GameObjects.Sprite {
+export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
   entity: Entity
   entityIdText: Phaser.GameObjects.Text
   position: C.Position
@@ -31,7 +31,6 @@ export default abstract class BasePrefab extends Phaser.GameObjects.Sprite {
   }
 
   update() {
-    this.setPosition(this.position.x, this.position.y)
     this.entityIdText.setPosition(this.x, this.y)
     if(this.entity.hasAttribute(C.Moving.name)) {
       let mv: C.Moving = this.entity.components.Moving

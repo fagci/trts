@@ -1,6 +1,6 @@
 import EntityManager from './ecs/entity-manager'
 import * as Components from './components/components'
-import {RenderObject, Slots} from './components/components'
+import { RenderObject, Slots } from './components/components'
 import System from './ecs/system'
 import MovingSystem from './systems/moving'
 import RenderSystem from './systems/render'
@@ -41,7 +41,7 @@ export default class MapManager {
     }
 
     System
-      .addSystem(new MovingSystem())
+      // .addSystem(new MovingSystem())
       .addSystem(new EnergySystem())
       .addSystem(new RenderSystem())
   }
@@ -50,6 +50,11 @@ export default class MapManager {
     let entityDefComponents = this.entities[entityName]
     let mergedComponents = Phaser.Utils.Objects.Merge(entityMapComponents || {}, entityDefComponents)
     let entity = EntityManager.create(entityName)
+
+    if (!entityDefComponents) {
+      console.warn(`Entity ${entityName} not defined`)
+      return null
+    }
 
     parent.appendChild(entity)
 
@@ -72,7 +77,7 @@ export default class MapManager {
   }
 
   onCameraUpdate() {
-    let {left, top, right, bottom} = this.scene.cameras.main.worldView
+    let { left, top, right, bottom } = this.scene.cameras.main.worldView
 
     let SX = (left >> 8) - 2
     let SY = (top >> 8) - 2
@@ -110,12 +115,12 @@ export default class MapManager {
 
   private postProcessEntityComponents(entity: Entity) {
     let RenderObject: RenderObject, Slots: Slots
-    ({RenderObject, Slots} = entity.components)
+    ({ RenderObject, Slots } = entity.components)
 
 
     if (RenderObject) {
       let gameObject = MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
-      this.entityLayer.add(gameObject)
+      gameObject && this.entityLayer.add(gameObject)
     }
     if (Slots) {
       for (let slotEntityName of Slots.places) {

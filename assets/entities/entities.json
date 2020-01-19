@@ -1,4 +1,11 @@
 {
+  "Plane": {
+    "RenderObject": {
+      "texture": "plane"
+    },
+    "Position": {},
+    "Solid": {}
+  },
   "Turret": {
     "Health": {
       "max": 1000

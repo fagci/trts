@@ -13,7 +13,7 @@ export default class RenderSystem extends System {
 
       ({RenderObject} = entity.components)
 
-      if(RenderObject.gameObject) RenderObject.gameObject.update()
+      if(RenderObject.gameObject) RenderObject.gameObject.update(delta)
     }
   }
 }

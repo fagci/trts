@@ -44,7 +44,7 @@
       "range": 128
     },
     "EnergyGenerator": {
-      "type": "FUEL"
+      "type": "THERMAL"
     },
     "Solid": {},
     "Health": {"max": 500}

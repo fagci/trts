@@ -52,10 +52,7 @@ export default class EnergySystem extends System {
 
       // Consume energy
 
-      let connectionsTotalCurrent = Object.values(connections)
-        .reduce((sum, sinkEntity) => sum + sinkEntity.components.Energy.current)
-
-      if(source.capacity < connectionsTotalCurrent) continue
+      if(source.capacity < source.connectionsTotalCurrent) continue
 
       for (const sinkId in connections) {
         if (connections.hasOwnProperty(sinkId)) {

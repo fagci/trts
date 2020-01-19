@@ -83,17 +83,30 @@ export class Energy {
   connections: { [name: string]: Entity } = {} // this = source, connections to sinks because of transmit range
 
   isDirty: boolean = false
+  connectionsTotalCurrent: number = 0
+
+  updateConnectionsData() {
+    this.connectionsTotalCurrent = 0
+    
+    for(let sinkEntityId in this.connections) {
+      if(this.connections.hasOwnProperty(sinkEntityId)) {
+        this.connectionsTotalCurrent += 
+          this.connections[sinkEntityId].components.Energy.current
+      }
+    }
+    this.isDirty = true
+  }
 
   addConnection(entity:Entity) {
     if(this.hasConnection(entity)) return
     this.connections[entity.id] = entity
-    this.isDirty = true
+    this.updateConnectionsData()
   }
 
   removeConnection(entity:Entity) {
     if(!this.hasConnection(entity)) return
     delete this.connections[entity.id]
-    this.isDirty = true
+    this.updateConnectionsData()
   }
 
   hasConnection(entity: Entity) {

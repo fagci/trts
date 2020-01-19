@@ -72,7 +72,7 @@ const PowerSource = {
   AIR: {current: 0.05},
   THERMAL: {current: 0.01},
   MECHANICAL: {current: 1},
-  FUEL: {current: 1},
+  FUEL: {current: 3.1},
 }
 
 export class Energy {

@@ -7,16 +7,6 @@ export default class EnergySystem extends System {
     C.Energy.name,
   ]
 
-  static filterSource(entity: Entity) {
-    return entity.components.EnergyGenerator
-      || entity.components.EnergyTransponder
-  }
-
-  static filterSink(entity: Entity) {
-    return entity.components.EnergyConsumer
-      || entity.components.EnergyTransponder
-  }
-
   update(time: number, delta: number) {
     let sourceEntity: Entity, sinkEntity: Entity
     let source: C.Energy, sink: C.Energy
@@ -27,7 +17,8 @@ export default class EnergySystem extends System {
     for (sourceEntity of this.group) { // sources
       if (!EnergySystem.filterSource(sourceEntity)) continue
 
-      ({ Energy: source, Position: sourcePos } = sourceEntity.components)
+      source = sourceEntity.components.Energy
+      sourcePos = sourceEntity.components.Position
 
       for (sinkEntity of this.group) { // sinks
         if (sourceEntity === sinkEntity) continue
@@ -46,23 +37,23 @@ export default class EnergySystem extends System {
     }
 
     // DISTRIBUTE ENERGY
+    let connections: object
 
-    for (const sourceEntity of this.group) {
+    for (sourceEntity of this.group) {
       if (!EnergySystem.filterSource(sourceEntity)) continue
       source = sourceEntity.components.Energy
-      let connections = source.connections
+      connections = source.connections
 
       // Generate energy
       if (sourceEntity.components.EnergyGenerator !== undefined && source.capacity < source.totalCapacity) {
         source.capacity += sourceEntity.components.EnergyGenerator.powerSource.current * delta
-        source.capacity = Phaser.Math.Clamp(source.capacity, 0, source.totalCapacity)
+        source.capacity = Math.min(source.capacity, source.totalCapacity)
       }
 
       // Consume energy
 
       let connectionsTotalCurrent = Object.values(connections)
-        .map((sinkEntity) => sinkEntity.components.Energy.current)
-        .reduce((sum, x) => sum + x)
+        .reduce((sum, sinkEntity) => sum + sinkEntity.components.Energy.current)
 
       if(source.capacity < connectionsTotalCurrent) continue
 
@@ -80,15 +71,24 @@ export default class EnergySystem extends System {
 
           source.capacity -= taken
           sink.capacity += taken
-          sink.capacity = Phaser.Math.Clamp(sink.capacity, 0, sink.totalCapacity)
+          sink.capacity = Math.min(sink.capacity, sink.totalCapacity)
 
-          if (sinkEntity.components.EnergyConsumer !== undefined) {
-            if (sink.capacity >= sinkEntity.components.EnergyConsumer.usage) {
-              sink.capacity -= sinkEntity.components.EnergyConsumer.usage
-            }
+          if (sinkEntity.components.EnergyConsumer !== undefined) { // TODO: use energy for something
+            let usage = sinkEntity.components.EnergyConsumer.usage
+            if (sink.capacity >= usage) sink.capacity -= usage
           }
         }
       }
     }
+  }
+
+  static filterSource(entity: Entity) {
+    return entity.components.EnergyGenerator
+      || entity.components.EnergyTransponder
+  }
+
+  static filterSink(entity: Entity) {
+    return entity.components.EnergyConsumer
+      || entity.components.EnergyTransponder
   }
 }

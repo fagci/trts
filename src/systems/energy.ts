@@ -14,18 +14,16 @@ export default class EnergySystem extends System {
 
     // BUILD GRAPH
 
-    for (sourceEntity of this.group) { // sources
+    for (sourceEntity of this.group) {
       if (!EnergySystem.filterSource(sourceEntity)) continue
 
       source = sourceEntity.components.Energy
       sourcePos = sourceEntity.components.Position
 
-      for (sinkEntity of this.group) { // sinks
+      for (sinkEntity of this.group) {
         if (sourceEntity === sinkEntity) continue
         if (!EnergySystem.filterSink(sinkEntity)) continue
 
-        // TODO: pass transponder if it already exists in links
-        // also, I think, Transponder will behave as layer
         sinkPos = sinkEntity.components.Position
 
         if (Phaser.Math.Distance.BetweenPoints(sourcePos, sinkPos) > source.range) {

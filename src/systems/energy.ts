@@ -20,74 +20,69 @@ export default class EnergySystem extends System {
   }
 
   update(time: number, delta: number) {
-    let energy1: C.Energy, energy2: C.Energy, pos1: C.Position, pos2: C.Position
+    let source: C.Energy, sourcePos: C.Position, sinkPos: C.Position
 
-    for (const entity1 of this.group) { // sources
-      if (!EnergySystem.filterSource(entity1)) continue
 
-      ({ Energy: energy1, Position: pos1 } = entity1.components)
+    // build links between energy entities
 
-      EnergySystem.generateEnergy(entity1, energy1, delta)
+    for (const sourceEntity of this.group) { // sources
+      if (!EnergySystem.filterSource(sourceEntity)) continue
 
-      for (const entity2 of this.group) { // sinks
-        if (entity1 === entity2) continue
-        if (!EnergySystem.filterSink(entity2)) continue
+      ({ Energy: source, Position: sourcePos } = sourceEntity.components)
+   
+      for (const sinkEntity of this.group) { // sinks
+        if (sourceEntity === sinkEntity) continue
+        if (!EnergySystem.filterSink(sinkEntity)) continue
 
         // TODO: pass transponder if it already exists in links
         // also, I think, Transponder will behave as layer
-        ({ Energy: energy2, Position: pos2 } = entity2.components)
+        ({ Position: sinkPos } = sinkEntity.components)
 
-        if (distanceBetween(pos1.x, pos1.y, pos2.x, pos2.y) > energy1.range) {
-          energy1.removeConnection(entity2) // disconnect
+        if (distanceBetween(sourcePos.x, sourcePos.y, sinkPos.x, sinkPos.y) > source.range) {
+          source.removeConnection(sinkEntity) // disconnect
         } else {
-          energy1.addConnection(entity2) // connect source to sinks
+          source.addConnection(sinkEntity) // connect source to sinks
         }
       }
     }
 
-    for (const energySource of this.group) {
-      if (!EnergySystem.filterSource(energySource)) {
-        continue
+    // process energy distribution
+    for (const sourceEntity of this.group) {
+      if (!EnergySystem.filterSource(sourceEntity)) continue
+      source = sourceEntity.components.Energy
+      let connections = source.connections
+
+      // Generate energy
+      if (sourceEntity.components.EnergyGenerator !== undefined && source.capacity < source.totalCapacity) {
+        source.capacity += sourceEntity.components.EnergyGenerator.powerSource.current * delta
+        source.capacity = Phaser.Math.Clamp(source.capacity, 0, source.totalCapacity)
       }
 
-      const consumersEnergy: C.Energy = energySource.components.Energy
-      let connections = consumersEnergy.connections
-
+      
       let percent = 1.0 / Object.keys(connections).length
 
-      for (const sink in connections) {
-        if (connections.hasOwnProperty(sink)) {
-          const connection: Entity = connections[sink]
-          EnergySystem.consumeEnergy(energySource, connection, percent)
+      for (const sinkId in connections) {
+        if (connections.hasOwnProperty(sinkId)) {
+   
+          let sinkEntity = connections[sinkId]
+          
+          // consume energy
+         
+          let sink: C.Energy = sinkEntity.components.Energy
+          let sinkConsumeCurrent: number = 0
+
+          sinkConsumeCurrent = sink.current
+
+          let taken = Math.min(sinkConsumeCurrent * percent * delta, source.capacity)
+          
+          source.capacity -= taken
+          sink.capacity += taken
+          sink.capacity = Phaser.Math.Clamp(sink.capacity, 0, sink.totalCapacity)
+
+          if (sinkEntity.components.EnergyConsumer !== undefined && sink.capacity >= sinkConsumeCurrent) {
+            sink.capacity -= sinkEntity.components.EnergyConsumer.usage
+          }   
         }
-      }
-    }
-  }
-
-  private static generateEnergy(entity1: Entity, energy1: C.Energy, delta: number) {
-    if (entity1.components.EnergyGenerator && energy1.capacity < energy1.totalCapacity) {
-      energy1.capacity += entity1.components.EnergyGenerator.powerSource.current * delta
-      energy1.capacity = Phaser.Math.Clamp(energy1.capacity, 0, energy1.totalCapacity)
-    }
-  }
-
-  private static consumeEnergy(source: Entity, dst: Entity, percent: number) {
-    let sourceEnergy: C.Energy = source.components.Energy
-    let dstEnergy: C.Energy = dst.components.Energy
-    let dstConsumeCurrent: number = 0
-    if (dst.components.EnergyTransponder !== undefined) {
-      dstConsumeCurrent = dst.components.Energy.current
-    }
-    if (dst.components.EnergyConsumer !== undefined) {
-      dstConsumeCurrent = dst.components.EnergyConsumer.usage
-
-      let taken = Phaser.Math.Clamp(dstConsumeCurrent * percent, 0, sourceEnergy.capacity)
-      sourceEnergy.capacity -= taken
-      dstEnergy.capacity += taken
-      dstEnergy.capacity = Phaser.Math.Clamp(dstEnergy.capacity, 0, dstEnergy.totalCapacity)
-
-      if (dstEnergy.capacity >= dst.components.EnergyConsumer.usage) {
-        dstEnergy.capacity -= dst.components.EnergyConsumer.usage
       }
     }
   }

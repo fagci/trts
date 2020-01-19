@@ -56,7 +56,8 @@
     "Energy": {
       "totalCapacity": 10,
       "capacity": 0,
-      "range": 128
+      "range": 128,
+      "current": 0.01
     },
     "EnergyTransponder": {},
     "Solid": {},
@@ -69,10 +70,10 @@
     "Energy": {
       "totalCapacity": 10,
       "capacity": 0,
-      "current": 0.01
+      "current": 0.1
     },
     "EnergyConsumer": {
-      "usage": 5
+      "usage": 1
     },
     "Solid": {},
     "Health": {"max": 500}

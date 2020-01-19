@@ -44,7 +44,7 @@ export default class Chunk {
     this.mapLayerWater.destroy()
   }
 
-  load() {
+  load(layer: Phaser.GameObjects.Group) {
     if (this.isLoaded) return
     const x1 = this.x << Chunk.sizeExp
     const y1 = this.y << Chunk.sizeExp
@@ -78,9 +78,12 @@ export default class Chunk {
     const tileSet = tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
     const tileSetWater = tileMap.addTilesetImage('mc', null, 16, 16, 1, 2)
     
-    // const tileMapWater = this.scene.add.tilemap(null, 16, 16, 16, 16, dataWater, true)
-    this.mapLayer = tileMap.createStaticLayer(0, tileSet, this.x << 8, this.y << 8).setDepth(-1)
-    this.mapLayerWater = tileMapWater.createStaticLayer(0, tileSetWater, this.x << 8, this.y << 8).setDepth(-1)
+    this.mapLayer = tileMap.createStaticLayer(0, tileSet, this.x << 8, this.y << 8)
+    this.mapLayerWater = tileMapWater.createStaticLayer(0, tileSetWater, this.x << 8, this.y << 8)
+
+    layer.add(this.mapLayer)
+    layer.add(this.mapLayerWater)
+
     return null
   }
 }

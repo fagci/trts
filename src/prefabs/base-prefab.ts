@@ -9,7 +9,7 @@ export default abstract class BasePrefab extends Phaser.GameObjects.Sprite {
   protected constructor(scene: Phaser.Scene, entity: Entity) {
     let Position: C.Position, RenderObject: C.RenderObject
     ({ Position, RenderObject } = entity.components)
-    Position = Position || new Phaser.Geom.Point()
+    Position = Position || new C.Position()
     super(scene, Position.x, Position.y, 'swss', RenderObject.texture)
     scene.add.existing(this)
     if (RenderObject.animation) {

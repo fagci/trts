@@ -89,7 +89,7 @@ export default class MapManager {
         if (chunk) continue
 
         chunk = new Chunk(this.scene, x, y)
-        chunk.load()
+        chunk.load(this.groundLayer)
         this.chunks[chunkKey] = chunk
       }
     }
@@ -114,7 +114,8 @@ export default class MapManager {
 
 
     if (RenderObject) {
-      MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
+      let gameObject = MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
+      this.entityLayer.add(gameObject)
     }
     if (Slots) {
       for (let slotEntityName of Slots.places) {
@@ -131,9 +132,9 @@ export default class MapManager {
     const Prefab = Prefabs[prefabName]
     const RenderObject: RenderObject = entity.components.RenderObject
     if (Prefab) {
-      RenderObject.gameObject = new Prefab(scene, entity, parent)
-    } else {
-      console.warn(`Prefab ${prefabName} not found`)
+      return RenderObject.gameObject = new Prefab(scene, entity, parent)
     }
+    console.warn(`Prefab ${prefabName} not found`)
+    return null
   }
 }

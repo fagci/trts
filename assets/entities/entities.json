@@ -70,7 +70,7 @@
     "Energy": {
       "totalCapacity": 10,
       "capacity": 0,
-      "current": 0.1
+      "current": 1
     },
     "EnergyConsumer": {
       "usage": 1

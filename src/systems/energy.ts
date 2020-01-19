@@ -2,8 +2,6 @@ import System from '../ecs/system'
 import Entity from '../ecs/entity'
 import * as C from '../components/components'
 
-const distanceBetween = Phaser.Math.Distance.Between
-
 export default class EnergySystem extends System {
   deps = [
     C.Energy.name,
@@ -20,25 +18,26 @@ export default class EnergySystem extends System {
   }
 
   update(time: number, delta: number) {
-    let source: C.Energy, sourcePos: C.Position, sinkPos: C.Position
+    let sourceEntity: Entity, sinkEntity: Entity
+    let source: C.Energy, sink: C.Energy
+    let sourcePos: C.Position, sinkPos: C.Position
 
+    // BUILD GRAPH
 
-    // build links between energy entities
-
-    for (const sourceEntity of this.group) { // sources
+    for (sourceEntity of this.group) { // sources
       if (!EnergySystem.filterSource(sourceEntity)) continue
 
       ({ Energy: source, Position: sourcePos } = sourceEntity.components)
-   
-      for (const sinkEntity of this.group) { // sinks
+
+      for (sinkEntity of this.group) { // sinks
         if (sourceEntity === sinkEntity) continue
         if (!EnergySystem.filterSink(sinkEntity)) continue
 
         // TODO: pass transponder if it already exists in links
         // also, I think, Transponder will behave as layer
-        ({ Position: sinkPos } = sinkEntity.components)
+        sinkPos = sinkEntity.components.Position
 
-        if (distanceBetween(sourcePos.x, sourcePos.y, sinkPos.x, sinkPos.y) > source.range) {
+        if (Phaser.Math.Distance.BetweenPoints(sourcePos, sinkPos) > source.range) {
           source.removeConnection(sinkEntity) // disconnect
         } else {
           source.addConnection(sinkEntity) // connect source to sinks
@@ -46,7 +45,8 @@ export default class EnergySystem extends System {
       }
     }
 
-    // process energy distribution
+    // DISTRIBUTE ENERGY
+
     for (const sourceEntity of this.group) {
       if (!EnergySystem.filterSource(sourceEntity)) continue
       source = sourceEntity.components.Energy
@@ -58,30 +58,35 @@ export default class EnergySystem extends System {
         source.capacity = Phaser.Math.Clamp(source.capacity, 0, source.totalCapacity)
       }
 
-      
-      let percent = 1.0 / Object.keys(connections).length
+      // Consume energy
+
+      let connectionsTotalCurrent = Object.values(connections)
+        .map((sinkEntity) => sinkEntity.components.Energy.current)
+        .reduce((sum, x) => sum + x)
+
+      if(source.capacity < connectionsTotalCurrent) continue
 
       for (const sinkId in connections) {
         if (connections.hasOwnProperty(sinkId)) {
-   
-          let sinkEntity = connections[sinkId]
-          
-          // consume energy
-         
-          let sink: C.Energy = sinkEntity.components.Energy
+
+          sinkEntity = connections[sinkId]
+
+          sink = sinkEntity.components.Energy
           let sinkConsumeCurrent: number = 0
 
           sinkConsumeCurrent = sink.current
 
-          let taken = Math.min(sinkConsumeCurrent * percent * delta, source.capacity)
-          
+          let taken = Math.min(sinkConsumeCurrent * delta, source.capacity)
+
           source.capacity -= taken
           sink.capacity += taken
           sink.capacity = Phaser.Math.Clamp(sink.capacity, 0, sink.totalCapacity)
 
-          if (sinkEntity.components.EnergyConsumer !== undefined && sink.capacity >= sinkConsumeCurrent) {
-            sink.capacity -= sinkEntity.components.EnergyConsumer.usage
-          }   
+          if (sinkEntity.components.EnergyConsumer !== undefined) {
+            if (sink.capacity >= sinkEntity.components.EnergyConsumer.usage) {
+              sink.capacity -= sinkEntity.components.EnergyConsumer.usage
+            }
+          }
         }
       }
     }

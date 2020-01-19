@@ -35,7 +35,7 @@ export abstract class EnergyPrefab extends BasePrefab {
     this.energyCapacityText
       .setPosition(this.x, this.y + this.height / 2)
       .setText([
-        `${this.energy.capacity.toFixed(2)}/${this.energy.totalCapacity.toFixed(0)}`,
+        `${this.energy.capacity.toFixed(1)}/${this.energy.totalCapacity.toFixed(0)}`,
         `${connectionIds}`,
         `I: ${this.energy.current}`,
       ])

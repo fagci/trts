@@ -40,7 +40,6 @@ export default class MainScene extends Phaser.Scene {
     this.input.on('pointerup', this.onPointerUp, this)
 
     this.updateCamera()
-    this.scene.launch('UIScene')
   }
 
   onPointerUp(pointer: Phaser.Input.Pointer) {
@@ -52,7 +51,6 @@ export default class MainScene extends Phaser.Scene {
 
   update(time, delta) {
     MapManager.update(time, delta)
-    this.followPoint.setFromObject(this.cameras.main)
 
     if (this.game.input.activePointer.isDown) {
       if (this.dragPoint) {

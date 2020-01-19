@@ -9,6 +9,7 @@ import Chunk from './chunk'
 import * as Prefabs from './prefabs'
 import Entity from './ecs/entity'
 import EnergySystem from './systems/energy'
+import UIScene from './scenes/ui-scene'
 
 
 export default class MapManager {
@@ -121,6 +122,8 @@ export default class MapManager {
     if (RenderObject) {
       let gameObject = MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
       gameObject && this.entityLayer.add(gameObject)
+      let ui: UIScene = this.scene.scene.get('UIScene') as UIScene
+      ui.addEntity(entity)
     }
     if (Slots) {
       for (let slotEntityName of Slots.places) {

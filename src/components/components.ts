@@ -1,9 +1,10 @@
 import Entity from '../ecs/entity'
+import BasePrefab from '../prefabs/base-prefab'
 
 export class RenderObject {
   texture: string
   animation: string
-  gameObject: Phaser.GameObjects.GameObject
+  gameObject: BasePrefab
 }
 
 export class Health {

@@ -20,22 +20,21 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
 
     this.setDepth(2)
 
-    this.entityIdText = scene.add.text(this.x, this.y, `${entity.id} (${entity.dataset.name.replace(/[^A-Z0-9]/g,'')})`, {
-      color: '#fff',
-      font: '10px monospace'
-    })
-      .setStroke('#000', 3)
-      .setDepth(this.depth)
+    // this.entityIdText = scene.add.text(this.x, this.y, `${entity.id} (${entity.dataset.name.replace(/[^A-Z0-9]/g, '')})`, {
+    //   color: '#fff',
+    //   font: '10px monospace'
+    // })
+    //   .setStroke('#000', 3)
+    //   .setDepth(this.depth)
 
-    this.entityIdText.setDisplayOrigin(this.entityIdText.width / 2, this.height + this.entityIdText.height/2)
+    // this.entityIdText.setDisplayOrigin(this.entityIdText.width / 2, this.height + this.entityIdText.height / 2)
   }
 
   update() {
-    this.entityIdText.setPosition(this.x, this.y)
-    if(this.entity.hasAttribute(C.Moving.name)) {
-      let mv: C.Moving = this.entity.components.Moving
-      this.setDepth(Phaser.Geom.Point.GetMagnitudeSq(mv.velocity)>0?3:2)
-      this.entityIdText.setDepth(this.depth)
+    // this.entityIdText.setPosition(this.x, this.y)
+    if (this.body) {
+      this.setDepth(this.body.velocity.length() > 0 ? 3 : 2)
+      // this.entityIdText.setDepth(this.depth)
     }
   }
 }

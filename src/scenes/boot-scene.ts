@@ -42,7 +42,9 @@ export default class BootScene extends Phaser.Scene {
       }),
     })
 
-    this.scene.start('MainScene')
+    this.scene.stop()
+    this.scene.launch('UIScene')
+    this.scene.launch('MainScene')
   }
 
   preload() {

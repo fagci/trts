@@ -30,6 +30,8 @@ export default abstract class BasePrefab extends Phaser.Physics.Arcade.Sprite {
         this.selectionGraphics.clear()
         Selectable.selected = !Selectable.selected
         if (Selectable.selected) {
+          this.setAcceleration(30,0)
+
           this.selectionGraphics
             .fillStyle(0x00ff00, 0.24)
             .lineStyle(1, 0x00ff00, 0.75)

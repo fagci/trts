@@ -184,5 +184,4 @@ export class LifeTime {
 
 export class Selectable {
   selected: boolean = false
-  color: number = 0xff0000
 }

@@ -4,7 +4,8 @@
       "texture": "plane"
     },
     "Position": {},
-    "Solid": {}
+    "Solid": {},
+    "Selectable": {}
   },
   "Turret": {
     "Health": {

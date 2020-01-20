@@ -4,7 +4,7 @@ export class Plane extends BasePrefab {
   constructor(scene, entity) {
     super(scene, entity)
     scene.physics.add.existing(this)
-    this.body.gravity.set(1, -3)
+    // this.body.gravity.set(1, -3)
     scene.cameras.main.startFollow(this, true, 0.5, 0.5)
   }
 

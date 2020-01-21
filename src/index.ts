@@ -4,6 +4,7 @@ import BootScene from './scenes/boot-scene'
 import Game from './game'
 import MainScene from './scenes/main-scene'
 import UIScene from './scenes/ui-scene'
+import MenuScene from './scenes/menu-scene'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -11,6 +12,7 @@ const config: Phaser.Types.Core.GameConfig = {
     BootScene,
     MainScene,
     UIScene,
+    MenuScene
   ],
   plugins: {
     // scene: [

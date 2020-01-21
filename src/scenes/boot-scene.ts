@@ -13,7 +13,12 @@ export default class BootScene extends Phaser.Scene {
   private loadResources() {
     this.load
       .image('mc', require('../../assets/gfx/mc.png'))
-      .spritesheet('icons', require('../../assets/gfx/icons.png'), {frameWidth: 32, frameHeight: 32})
+      .spritesheet('icons', require('../../assets/gfx/icons.png'), {
+        frameWidth: 24, 
+        frameHeight: 24,
+        spacing: 8,
+        margin: 4
+      })
       .atlas('swss', require('../../assets/gfx/swss.png'), require('../../assets/gfx/swss.json'))
       .json('entities', require('../../assets/entities/entities.json'))
       .json('maps', require('../../assets/maps/maps.json'))

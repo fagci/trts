@@ -19,10 +19,9 @@ export default class UIScene extends Phaser.Scene {
       .strokeCircle(0, 0, 16)
 
     this.topMenuBar = new MenuBar(this, 0, 0)
-    this.topMenuBar.addButton(1, e => {
-    }, e => {
-    })
-
+    this.topMenuBar
+      .addButton(119, 'Menu', e => {this.scene.launch('MenuScene')})
+      .addButton(104, 'Menu', e => {})
   }
 
   update() {

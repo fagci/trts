@@ -3,6 +3,7 @@ import MenuBar from '../ui/menu-bar'
 export default class UIScene extends Phaser.Scene {
   crosshair: Phaser.GameObjects.Graphics
   topMenuBar: MenuBar
+  fpsText: Phaser.GameObjects.Text
 
   constructor() {
     super({key: 'UIScene'})
@@ -18,12 +19,16 @@ export default class UIScene extends Phaser.Scene {
       .strokePath()
       .strokeCircle(0, 0, 16)
 
+    this.fpsText = this.add.text(this.game.renderer.width - 16, 16, '', {font: '14px'})
+      .setOrigin(1, 0).setStroke('#000', 3)
+
     this.topMenuBar = new MenuBar(this, 0, 0)
     this.topMenuBar
-      .addButton(119, 'Menu', e => {this.scene.launch('MenuScene')})
+      .addButton(119, 'Menu', () => {this.scene.launch('MenuScene')})
   }
 
   update() {
     this.crosshair.setPosition(this.cameras.main.centerX, this.cameras.main.centerY)
+    this.fpsText.setText(`FPS ${this.game.loop.actualFps | 0}`);
   }
 }

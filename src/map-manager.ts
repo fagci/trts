@@ -122,8 +122,7 @@ export default class MapManager {
     if (RenderObject) {
       let gameObject = MapManager.makePrefabForEntity(this.scene, entity, entity.parentElement as Entity)
       gameObject && this.entityLayer.add(gameObject)
-      let ui: UIScene = this.scene.scene.get('UIScene') as UIScene
-      ui.addEntity(entity)
+      // let ui: UIScene = this.scene.scene.get('UIScene') as UIScene
     }
     if (Slots) {
       for (let slotEntityName of Slots.places) {

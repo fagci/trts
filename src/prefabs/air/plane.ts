@@ -4,12 +4,11 @@ export class Plane extends BasePrefab {
   constructor(scene, entity) {
     super(scene, entity)
     scene.physics.add.existing(this)
-    scene.cameras.main.startFollow(this)
   }
 
   update(delta) {
     super.update(delta)
-    this.updateAngle(delta)
+    if(this.body.velocity.length() > 0) this.updateAngle(delta)
   }
 
   updateAngle(delta) {

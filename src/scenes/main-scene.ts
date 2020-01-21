@@ -32,38 +32,28 @@ export default class MainScene extends Phaser.Scene {
 
     this.followPoint = new Phaser.Math.Vector2(
       this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
-      this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5
+      this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5,
     )
 
     this.input.on('wheel', e => this.changeZoom(-e.deltaY / 1000))
-
-    this.input.on('pointerup', this.onPointerUp, this)
+    // this.input.on('pointerup', this.onPointerUp, this)
 
     this.updateCamera()
   }
 
-  onPointerUp(pointer: Phaser.Input.Pointer) {
-    const x = this.cameras.main.scrollX + pointer.x
-    const y = this.cameras.main.scrollY + pointer.y
-
-    // console.log(`Pointer up at ${x},${y}`)
-  }
+  // onPointerUp(pointer: Phaser.Input.Pointer) {
+  //   const x = this.cameras.main.scrollX + pointer.x
+  //   const y = this.cameras.main.scrollY + pointer.y
+  // }
 
   update(time, delta) {
     MapManager.update(time, delta)
+    this.dragCameraByPointer()
+    this.keysInteraction(delta)
+    this.mapManager.onCameraUpdate()
+  }
 
-    if (this.game.input.activePointer.isDown) {
-      if (this.dragPoint) {
-        this.addPosition(
-          this.dragPoint.x - this.game.input.activePointer.position.x,
-          this.dragPoint.y - this.game.input.activePointer.position.y,
-        )
-      }
-      this.dragPoint = this.game.input.activePointer.position.clone()
-    } else {
-      this.dragPoint = null
-    }
-
+  private keysInteraction(delta) {
     let speed = this.cameraSpeed / this.cameras.main.zoom * delta / 100
 
     if (this.movementKeys.W.isDown) this.addPosition(0, -speed)
@@ -73,7 +63,22 @@ export default class MainScene extends Phaser.Scene {
 
     if (this.zoomKeys.Z.isDown) this.changeZoom(0.01)
     if (this.zoomKeys.X.isDown) this.changeZoom(-0.01)
-    this.mapManager.onCameraUpdate()
+  }
+
+  private dragCameraByPointer() {
+    const activePointer = this.game.input.activePointer
+    if (!activePointer.downTime) return
+    if (activePointer.isDown) {
+      if (this.dragPoint) {
+        this.addPosition(
+          this.dragPoint.x - activePointer.x,
+          this.dragPoint.y - activePointer.y,
+        )
+      }
+      this.dragPoint = activePointer.position.clone()
+    } else {
+      this.dragPoint = null
+    }
   }
 
   addPosition(dx, dy) {

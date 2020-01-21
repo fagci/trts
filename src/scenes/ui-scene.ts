@@ -1,16 +1,11 @@
-import { Scene } from 'phaser'
-import Entity from '../ecs/entity'
-import { RenderObject } from '../components/components'
+import MenuBar from '../ui/menu-bar'
 
 export default class UIScene extends Phaser.Scene {
-  debugText: Phaser.GameObjects.Text
   crosshair: Phaser.GameObjects.Graphics
-
-  entityList: Map<string, Entity> = new Map()
-  entityListView: Phaser.GameObjects.Container
+  topMenuBar: MenuBar
 
   constructor() {
-    super({ key: 'UIScene' })
+    super({key: 'UIScene'})
   }
 
   create() {
@@ -23,30 +18,14 @@ export default class UIScene extends Phaser.Scene {
       .strokePath()
       .strokeCircle(0, 0, 16)
 
-    this.entityListView = this.add.container(0, 0)
+    this.topMenuBar = new MenuBar(this, 0, 0)
+    this.topMenuBar.addButton(1, e => {
+    }, e => {
+    })
+
   }
 
   update() {
     this.crosshair.setPosition(this.cameras.main.centerX, this.cameras.main.centerY)
-  }
-
-  addEntity(entity: Entity) {
-    this.entityList.set(entity.id, entity)
-
-    this.entityListView.removeAll()
-    this.entityList.forEach(entity => {
-      let r: RenderObject = entity.components.RenderObject
-      let sprite = this.make.sprite({
-        key: r.gameObject.frame.texture.key,
-        frame: r.gameObject.frame.name,
-      })
-      sprite.setOrigin(0, 0).setInteractive()
-      sprite.on('pointerup', (e) => {
-        console.log(`Click`, e)
-        const mainCamera = this.scene.get('MainScene').cameras.main
-        mainCamera.stopFollow()
-      })
-      this.entityListView.add(sprite)
-    })
   }
 }

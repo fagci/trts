@@ -12,23 +12,25 @@ export default class MenuScene extends Scene {
     const mainScene = this.scene.get('MainScene')
 
     uiScene.scene.setVisible(false)
-    mainScene.scene.sleep()
+    mainScene.scene.setActive(false)
 
     this.items = [
       { title: '<<< Back', click: () => {
         uiScene.scene.setVisible(true)
-        mainScene.scene.wake()
+        mainScene.scene.setActive(true)
         this.scene.stop()
       } }
     ]
 
-    this.cameras.main.setBackgroundColor('rgba(0,0,0,0.75)')
+    this.cameras.main.setBackgroundColor('rgba(34,68,92,0.75)')
     console.log(`Menu scene create`)
 
-    this.items.forEach(item => {
-      this.add.text(32, 32 + this.items.length * 48, item.title)
+    this.items.forEach((item,i) => {
+      this.add.text(32, 32 + i * 48, item.title)
         .setInteractive({ useHandCursor: true })
         .on('pointerup', item.click)
+        .on('pointerover', function(){ this.setTintFill(0xffffaa)})
+        .on('pointerout', function(){ this.setTintFill(0xffffff)})
     })
   }
 }

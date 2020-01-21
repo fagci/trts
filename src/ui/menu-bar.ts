@@ -1,5 +1,4 @@
 import Sprite = Phaser.GameObjects.Sprite
-import { Physics } from 'phaser'
 
 export default class MenuBar extends Phaser.GameObjects.Container {
   buttons: Sprite[]
@@ -14,33 +13,41 @@ export default class MenuBar extends Phaser.GameObjects.Container {
     this.buttons = []
     this.tooltip = scene.add.text(0, 0, '', {
       font: '14px monospace',
-      background: '#fff',
-      color: '#000'
-    }).setOrigin(0, 0)
+      color: '#fff'
+    }).setOrigin(0, 0).setStroke('#268', 3)
 
-    this.bg = new Phaser.GameObjects.Graphics(scene, {fillStyle: {color: 0x4466ee}})
-      .fillRect(0,0,1,48)
+    this.bg = new Phaser.GameObjects.Graphics(scene, { fillStyle: { color: 0x226688 } })
+      .fillRect(0, 0, 1, 44)
     this.add(this.bg)
   }
 
   addButton(tileKey: number, title: string, onClick: (e: any) => void) {
-    let sprite = new Phaser.GameObjects.Sprite(this.scene, this.buttons.length * 24, 0, 'icons', tileKey)
+    let sprite = new Phaser.GameObjects.Sprite(this.scene, this.buttons.length * 44 + 21, 22, 'icons', tileKey)
     this.add(sprite)
     const tooltip = this.tooltip
     sprite
-      .setOrigin(0, 0)
+      .setTintFill(0xe0e0e0)
       .setData('title', title)
-      .setInteractive({ useHandCursor: true  } )
+      .setInteractive({ useHandCursor: true })
       .on('pointerover', function (pointer: PointerEvent) {
+        this.setTintFill(0xffffaa)
         tooltip.setText(this.getData('title'))
-        tooltip.setPosition(this.x + 4, this.y + this.height)
+        tooltip.setPosition(this.x - 16, this.y + this.height)
       })
-      .on('pointerout', function(pointer: PointerEvent) {
+      .on('pointerout', function (pointer: PointerEvent) {
+        this.setTintFill(0xe0e0e0)
         tooltip.setText(null)
       })
-      .on('pointerup', onClick)
+      .on('pointerup', function (e: PointerEvent) {
+        this.setTintFill(0xe0e0e0)
+        tooltip.setText(null)
+        onClick(e)
+      })
+
+    sprite.input.hitArea = new Phaser.Geom.Rectangle(-10, -10, 44, 44)
+
     this.buttons.push(sprite)
-    this.bg.setScale(this.buttons.length * 24, 1)
+    this.bg.setScale(this.buttons.length * 44, 1)
     return this
   }
 }

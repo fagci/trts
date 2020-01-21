@@ -21,7 +21,6 @@ export default class UIScene extends Phaser.Scene {
     this.topMenuBar = new MenuBar(this, 0, 0)
     this.topMenuBar
       .addButton(119, 'Menu', e => {this.scene.launch('MenuScene')})
-      .addButton(104, 'Menu', e => {})
   }
 
   update() {

@@ -27,8 +27,8 @@ export abstract class EnergyPrefab extends BasePrefab {
       .setLineSpacing(-4)
   }
 
-  update() {
-    super.update()
+  update(delta) {
+    super.update(delta)
     const connections = this.energy.connections
     const connectionIds = Object.keys(connections)
 

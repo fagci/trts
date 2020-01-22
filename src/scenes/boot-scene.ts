@@ -14,10 +14,10 @@ export default class BootScene extends Phaser.Scene {
     this.load
       .image('mc', require('../../assets/gfx/mc.png'))
       .spritesheet('icons', require('../../assets/gfx/icons.png'), {
-        frameWidth: 24, 
+        frameWidth: 24,
         frameHeight: 24,
         spacing: 8,
-        margin: 4
+        margin: 4,
       })
       .atlas('swss', require('../../assets/gfx/swss.png'), require('../../assets/gfx/swss.json'))
       .json('entities', require('../../assets/entities/entities.json'))
@@ -44,13 +44,14 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 12,
       repeat: -1,
       frames: this.anims.generateFrameNames('swss', {
-        frames: ['base_1', 'base_2', 'base_3', 'base_4']
+        frames: ['base_1', 'base_2', 'base_3', 'base_4'],
       }),
     })
 
     this.scene.stop()
     this.scene.launch('UIScene')
-    this.scene.launch('MainScene')
+    this.scene.launch('MenuScene')
+    // this.scene.launch('MainScene')
   }
 
   preload() {

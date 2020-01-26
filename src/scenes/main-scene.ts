@@ -4,7 +4,6 @@ import MapManager from '../map-manager'
 
 type KeyMap = { [key: string]: Input.Keyboard.Key }
 
-
 export default class MainScene extends Phaser.Scene {
   followPoint: Phaser.Math.Vector2
   cameraSpeed: number = 64
@@ -35,7 +34,7 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5,
     )
 
-    this.input.on('wheel', e => this.changeZoom(-e.deltaY / 1000))
+    this.input.on('wheel', (e: {deltaY: number}) => this.changeZoom(-e.deltaY / 1000))
     // this.input.on('pointerup', this.onPointerUp, this)
 
     this.updateCamera()
@@ -46,14 +45,14 @@ export default class MainScene extends Phaser.Scene {
   //   const y = this.cameras.main.scrollY + pointer.y
   // }
 
-  update(time, delta) {
+  update(time: number, delta: number) {
     MapManager.update(time, delta)
     this.dragCameraByPointer()
     this.keysInteraction(delta)
     this.mapManager.onCameraUpdate()
   }
 
-  private keysInteraction(delta) {
+  private keysInteraction(delta: number) {
     let speed = this.cameraSpeed / this.cameras.main.zoom * delta / 100
 
     if (this.movementKeys.W.isDown) this.addPosition(0, -speed)
@@ -81,7 +80,7 @@ export default class MainScene extends Phaser.Scene {
     }
   }
 
-  addPosition(dx, dy) {
+  addPosition(dx: number, dy: number) {
     this.followPoint.x += dx
     this.followPoint.y += dy
     this.updateCamera()
@@ -93,7 +92,7 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.zoom = this.cameraZoom
   }
 
-  changeZoom(delta) {
+  changeZoom(delta: number) {
     this.cameraZoom += delta
     this.updateCamera()
   }

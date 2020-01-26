@@ -1,5 +1,5 @@
 import 'phaser'
-import DebugDrawPlugin from 'phaser-plugin-debug-draw';
+import DebugDrawPlugin from 'phaser-plugin-debug-draw'
 import BootScene from './scenes/boot-scene'
 import Game from './game'
 import MainScene from './scenes/main-scene'
@@ -8,12 +8,7 @@ import MenuScene from './scenes/menu-scene'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  scene: [
-    BootScene,
-    MainScene,
-    UIScene,
-    MenuScene
-  ],
+  scene: [BootScene, MainScene, UIScene, MenuScene],
   plugins: {
     // scene: [
     //   {
@@ -34,10 +29,10 @@ const config: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: {x: 0, y: 0},
+      gravity: { x: 0, y: 0 },
       debug: true,
     },
-  }
+  },
 }
 
 window.addEventListener('load', () => {

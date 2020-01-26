@@ -1,8 +1,8 @@
-import {Scene} from 'phaser'
+import { Scene } from 'phaser'
 import Menu from '../menus/menu'
 
 export default class MenuScene extends Scene {
-  items: [{ title: string, click: Function }]
+  items: [{ title: string; click: Function }]
 
   constructor() {
     super('MenuScene')
@@ -14,21 +14,19 @@ export default class MenuScene extends Scene {
 
     const menu = new Menu(this)
 
-    menu.on('press', (e) => {
+    menu.on('press', (e) => {})
 
-    })
-
-    menu.addItem({title: 'Refresh'})
-    menu.addItem({title: 'Second item'})
-    menu.addItem({title: 'Third item'})
+    menu.addItem({ title: 'Refresh' })
+    menu.addItem({ title: 'Second item' })
+    menu.addItem({ title: 'Third item' })
 
     uiScene.scene.setVisible(false)
     mainScene.scene.setActive(false)
 
-
     this.items = [
       {
-        title: '<<< Back', click: () => {
+        title: '<<< Back',
+        click: () => {
           uiScene.scene.setVisible(true)
           mainScene.scene.setActive(true)
           this.scene.stop()
@@ -40,13 +38,14 @@ export default class MenuScene extends Scene {
     console.log(`Menu scene create`)
 
     this.items.forEach((item, i) => {
-      this.add.text(32, 32 + i * 48, item.title)
-        .setInteractive({useHandCursor: true})
+      this.add
+        .text(32, 32 + i * 48, item.title)
+        .setInteractive({ useHandCursor: true })
         .on('pointerup', item.click)
-        .on('pointerover', function () {
+        .on('pointerover', function() {
           this.setTintFill(0xffffaa)
         })
-        .on('pointerout', function () {
+        .on('pointerout', function() {
           this.setTintFill(0xffffff)
         })
     })

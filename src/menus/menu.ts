@@ -1,10 +1,10 @@
-import {Events, Input, Scene} from 'phaser'
+import { Events, Input, Scene } from 'phaser'
 
 type KeyMap = { [key: string]: Input.Keyboard.Key }
 type MenuItem = {
-  active: boolean,
-  title: string,
-  icon: string | number,
+  title: string
+  active?: boolean
+  icon?: string | number
 }
 
 export default class Menu extends Events.EventEmitter {
